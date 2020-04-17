@@ -28,7 +28,7 @@ public class ProjectController {
         return projectRepository.findAll();
     }
 
-    @PostMapping(value = "/createProject/create")
+    @PostMapping(value = "/createProject")
     public Project createProject(@Valid @RequestBody Project project) {
         System.out.println("store project...");
         System.out.println(project);
