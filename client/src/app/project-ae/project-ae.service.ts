@@ -3,6 +3,7 @@ import {Observable, of} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError, retry} from 'rxjs/operators';
 import {Project} from '../../assets/models/project';
+import {Categorie} from '../../assets/models/categorie';
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +46,16 @@ export class ProjectAeService {
         catchError(err => {
           console.error('updateProject -> failed', err);
           return of(null);
+        })
+      );
+  }
+
+  getCategories(): Observable<Categorie[]> {
+    return this.http.get<Categorie []>(this.url + '/categories')
+      .pipe(
+        catchError(err => {
+          console.error('getCategories -> failed', err);
+          return of([]);
         })
       );
   }

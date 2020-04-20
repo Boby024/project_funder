@@ -11,8 +11,6 @@ import {ActivatedRoute} from '@angular/router';
 export class StartpageOverviewComponent implements OnInit {
 
   projects: Project[];
-  finalList: any;
-  faqs: any;
   searchWord: string;
 
   constructor(private startpageService: StartpageService,
@@ -41,17 +39,5 @@ export class StartpageOverviewComponent implements OnInit {
       });
     }
   }
-
-  /*showOneProject(project: Project[]) {
-    for (let project of this.projects) {
-      this.finalList = '<div class="element">' +
-        '      <p class="elementImgae">' + project.image + ' </p>' +
-        '      <p>' + project.title + '</p>' +
-        '      <p><strong>von: </strong>' + project.creatorid + '</p>' +
-        '      <p><strong>aktuell: </strong>' + project.fundinglimit + '</p>\n' +
-        '    </div>';
-    }
-    document.getElementById('projects_div').innerHTML += this.finalList;
-  }*/
 
 }

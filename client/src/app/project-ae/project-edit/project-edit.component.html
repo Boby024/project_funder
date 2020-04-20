@@ -1,1 +1,61 @@
-<p>project-edit works!</p>
+<div style=" width:25%;
+  margin-left:auto;
+  margin-right:auto;">
+
+  <h2 style="margin-top: 70px; text-align: center">Projekt erstellen</h2>
+  <div>
+    <mat-card-content>
+      <form [formGroup]="project" (ngSubmit)="submit()">
+        <div>
+          <mat-form-field appearance="outline" style="width: 450px">
+            <mat-label>Titel</mat-label>
+            <input type="text" matInput placeholder="Titel" formControlName="title">
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-form-field appearance="outline" style="width: 450px">
+            <mat-label>Finanzierungslimit</mat-label>
+            <input type="text" matInput placeholder="Finanzierungslimit" (keypress)="keyPress($event)"formControlName="fundinglimit">
+            <mat-error>
+              <div *ngIf="fundinglimit.invalid && (fundinglimit.dirty || fundinglimit.touched)"> fundinglimit DECIMAL(10,2)</div>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div style="text-align: center; display: flex; flex-direction: row; flex-wrap: wrap; border: 1px solid white;">
+          <div><mat-label><strong>Kategorie:</strong> </mat-label></div>
+          <div style="border: 1px solid white; width: 300px; height: auto">
+            <mat-radio-group>
+              <mat-radio-button *ngFor="let categorie of categories" [value]="categorie.name">
+                {{categorie.name}}
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+
+        <div style="text-align: center; display: flex; flex-direction: row; border: 1px solid white;">
+          <div><mat-label><strong>Vorgänger:</strong> </mat-label></div>
+          <div style="border: 1px solid white; width: 300px; height: auto">
+            <mat-radio-group>
+              <mat-radio-button *ngFor="let project of projects" [value]="project.title">
+                {{project.title}}
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+
+        <div style="text-align: center; display: flex; flex-direction: row; border: 1px solid white;">
+          <div><mat-label><strong>Beschreibung:</strong> </mat-label></div>
+          <div style="border: 1px solid white; width: auto; height: auto">
+            <mat-form-field appearance="outline" style="width: 350px">
+              <textarea matInput  formControlName="description" placeholder="description" rows="5"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <mat-card-actions><button [disabled]="!project.valid" mat-raised-button color="primary">erstellen</button></mat-card-actions>
+      </form>
+    </mat-card-content>
+  </div>
+</div>

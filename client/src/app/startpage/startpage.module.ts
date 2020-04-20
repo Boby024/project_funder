@@ -9,7 +9,7 @@ import { ListProjectOverviewComponent } from './list-project-overview/list-proje
 
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatCardModule} from '@angular/material/card';
-import {MatFormFieldControl, MatFormFieldModule} from '@angular/material/form-field';
+import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {ProjectAeModule} from '../project-ae/project-ae.module';

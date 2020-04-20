@@ -41,6 +41,22 @@ public class Project {
     private Instant createddate;
 
 
+    public String getUser() {return this.user.getUsername();}
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+    @ManyToOne(optional = false)//(cascade = CascadeType.ALL)
+    @JoinColumn( name = "creatorid",referencedColumnName = "id",insertable = false,updatable = false) // referencedColumnName = "id"
+    private User user;
+
+    public List<Project> getProject() {
+        return project;
+    }
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "predecessor",referencedColumnName = "identifier",insertable = false,updatable = false)// referencedColumnName = "id")
+    private List<Project> project;
+
      /*public Categorie getCategorie() {
         return categorie;
     }
