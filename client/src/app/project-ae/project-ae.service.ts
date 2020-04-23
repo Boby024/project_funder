@@ -20,8 +20,8 @@ export class ProjectAeService {
   constructor(private http: HttpClient) {
   }
 
-  getProjectById(id: string): Observable<Project> {
-    return this.http.get<Project>(this.url + '/getProject/id' + '/' + id)
+  getProjectById(id: any): Observable<Project> {
+    return this.http.get<Project>(this.url + '/getProject/' + id)
       .pipe(
         catchError(err => {
           console.error('getProjectById -> failed', err);
@@ -40,7 +40,7 @@ export class ProjectAeService {
       );
   }
 
-  updateProject(id: string, data: any): Observable<Project> {
+  updateProject(id: number, data: any): Observable<Project> {
     return this.http.put<Project>(this.url + '/updateProject/' + id, data, this.httpOptions)
       .pipe(
         catchError(err => {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Directive, OnInit} from '@angular/core';
 import {ProjectAeService} from '../project-ae.service';
 import {ActivatedRoute} from '@angular/router';
 import {FormBuilder, Validators} from '@angular/forms';
@@ -6,16 +6,18 @@ import {Categorie} from '../../../assets/models/categorie';
 import {Project} from '../../../assets/models/project';
 import {StartpageService} from '../../startpage/startpage.service';
 
+
 @Component({
   selector: 'app-project-edit',
   templateUrl: './project-edit.component.html',
   styleUrls: ['./project-edit.component.css']
 })
+
 export class ProjectEditComponent implements OnInit {
 
   project = this.fb.group({
     // identifier: [''],
-    title: ['', [Validators.required, Validators.maxLength(200)]],
+    title: ['', [Validators.required, Validators.maxLength(50)]],
     description: ['', Validators.required],
     // status: [''],
     fundinglimit: ['', Validators.pattern('^[0-9]{2,10}$')],
@@ -27,13 +29,39 @@ export class ProjectEditComponent implements OnInit {
   categories: Categorie[];
   projects: Project[];
   inputChar: any;
+  projectObject: Project;
+  projectId: number;
+  tryVariable: any;
 
   constructor(private fb: FormBuilder,
               private projectAeService: ProjectAeService,
               private startpageService: StartpageService,
               private activatedRoute: ActivatedRoute) {
     activatedRoute.url.subscribe( (url) => console.log(url) );
-    activatedRoute.data.subscribe( (url) => console.log(url) );
+  }
+
+  ngOnInit(): void {
+    this.getCategories();
+    this.getProjects();
+
+    this.activatedRoute.data.subscribe( (data: {updateProject: Project} | any) => {
+      console.log(data);
+      this.projectObject = data.updateProject;
+      if (this.projectObject) {
+        console.log(this.projectObject);
+        this.project.patchValue({
+          title: this.projectObject.title,
+          fundinglimit: this.projectObject.fundinglimit,
+          categorieid: this.projectObject.creatorId,
+          description: this.projectObject.description,
+        });
+        document.getElementById('createProject').style.display = 'none';
+        document.getElementById('editProject').style.display = 'block';
+      } else {
+        document.getElementById('createProject').style.display = 'block';
+        document.getElementById('editProject').style.display = 'none';
+      }
+    });
   }
 
   keyPress(event) {
@@ -45,10 +73,6 @@ export class ProjectEditComponent implements OnInit {
   }
   get fundinglimit() { return this.project.get('fundinglimit'); }
 
-  ngOnInit(): void {
-    this.getCategories();
-    this.getProjects();
-  }
   getCategories() {
     this.projectAeService.getCategories().subscribe( (response) => {
       this.categories = response;
@@ -66,9 +90,16 @@ export class ProjectEditComponent implements OnInit {
     // now I'll put it manually
     const creatorid = 3;
     this.project.get('creatorid').setValue(creatorid);
-    this.projectAeService.createProject(JSON.stringify(this.project.value))
-      .subscribe( (response) => {
-        console.log(response);
-      });
+    if (typeof this.projectId === 'number') {
+      this.projectAeService.updateProject(this.projectId, JSON.stringify(this.project.value))
+        .subscribe( (response) => {
+          console.log(response);
+        });
+    } else {
+      this.projectAeService.createProject(JSON.stringify(this.project.value))
+        .subscribe( (response) => {
+          console.log(response);
+        });
+    }
   }
 }

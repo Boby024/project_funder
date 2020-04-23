@@ -1,0 +1,25 @@
+<div>
+  <mat-card style="background-color: cornflowerblue; color: white">
+    <mat-card-title>Login</mat-card-title>
+  </mat-card>
+
+  <mat-card-content style="margin-top: 20px">
+    <form [formGroup]="loginDetail" (ngSubmit)="onSubmit()">
+      <div>
+        <mat-form-field appearance="outline" style="width: 450px">
+          <mat-label>Username</mat-label>
+          <input type="text" matInput placeholder="username" formControlName="username">
+        </mat-form-field>
+      </div>
+
+      <div>
+        <mat-form-field appearance="outline" style="width: 450px">
+          <mat-label>Kennwort</mat-label>
+          <input type="password" matInput placeholder="kennwort" formControlName="pssword">
+        </mat-form-field>
+      </div>
+
+      <mat-card-actions style="text-align: center"><button [disabled]="!loginDetail.valid" mat-raised-button color="primary">erstellen</button></mat-card-actions>
+    </form>
+  </mat-card-content>
+</div>

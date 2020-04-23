@@ -1,7 +1,7 @@
 <div class="element">
   <div class="elementImgae">{{project.image}}</div>
   <div class="elementText">
-    <p>{{project.title}}</p>
+    <p [routerLink]="['/project/updateProject', project.identifier]">{{project.title}}</p>
     <p><strong>von: </strong>{{project.user}}</p>
     <p><strong>aktuell: </strong>{{project.fundinglimit}} €</p>
   </div>

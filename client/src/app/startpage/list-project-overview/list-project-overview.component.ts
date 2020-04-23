@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Project} from '../../../assets/models/project';
 import {StartpageService} from '../startpage.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-list-project-overview',
@@ -10,10 +11,10 @@ import {StartpageService} from '../startpage.service';
 export class ListProjectOverviewComponent implements OnInit {
 
   @Input() project: Project;
-  finalList: any;
   username: string;
 
-  constructor(private startpageService: StartpageService) {
+  constructor(private startpageService: StartpageService,
+              private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {

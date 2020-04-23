@@ -4,23 +4,8 @@
   <div>
     <button mat-raised-button color="primary" [routerLink]="['']">Home</button>
   </div>
-  <div style="font-size: 25px">Project Funder</div>
-  <div>sign in</div>
+  <div style="font-size: 25px" [routerLink]="['']">Project Funder</div>
+  <div (click)="openDialog()">sign in</div>
 
 </mat-toolbar>
 
-
-<!--
- <mat-toolbar-row></mat-toolbar-row>
-  <mat-toolbar-row>Project Funder</mat-toolbar-row>
-  <mat-toolbar-row>register/login</mat-toolbar-row>
-
-
-<mat-card>Hello</mat-card>
-
-<div style="display: flex; flex-direction: row; justify-content: space-between">
-  <div>Home</div>
-  <div>Project Funder</div>
-  <div>register/login</div>
-</div>
--->

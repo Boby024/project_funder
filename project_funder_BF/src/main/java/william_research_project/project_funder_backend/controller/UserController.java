@@ -1,16 +1,9 @@
 package william_research_project.project_funder_backend.controller;
 
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import william_research_project.project_funder_backend.exception.ResourceNotFoundException;
 import william_research_project.project_funder_backend.model.Account;
@@ -35,6 +28,25 @@ public class UserController {
 
     @Autowired
     AccountRepository accountRepository;
+
+    @PostMapping(value = "/login")
+    public ResponseEntity<JSONObject> login(@Valid @RequestBody User user) {
+        JSONObject object = new JSONObject();
+        object.put("id",null);
+        object.put("username",null);
+        object.put("pssword",null);
+        try {
+            User user1 = userRepository.findByUsernameAndPssword(user.getUsername(), user.getPssword());
+            if (!user1.equals(null)) {
+                object.replace("id", user1.getId());
+                object.replace("username", user1.getUsername());
+                object.replace("pssword", user1.getPssword());
+            }
+        } catch (Exception e) {
+            System.out.println("User with Username " + user.getUsername() + " don't exist" );
+        }
+        return ResponseEntity.ok().body(object);
+    }
 
     @GetMapping("/users")
     public List<User> getUsers() {

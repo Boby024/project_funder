@@ -10,22 +10,24 @@ import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatRadioModule} from '@angular/material/radio';
+import {ListProjectOverviewComponent} from '../startpage/list-project-overview/list-project-overview.component';
 
 
 const projectRoutes: Routes = [
   {
-    path: 'createProject',
+    path: 'project/createProject',
     component: ProjectEditComponent,
-    resolve: {createProject: ProjectEditResolver},
+    resolve: {newProject: ProjectEditResolver},
   },
   {
-    path: 'updateProject',
+    path: 'project/updateProject/:id',
     component: ProjectEditComponent,
-    resolve: {createProject: ProjectEditResolver},
+    resolve: {updateProject: ProjectEditResolver},
   }
 ];
 @NgModule({
   declarations: [ProjectEditComponent],
+  exports: [RouterModule],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -37,6 +39,6 @@ const projectRoutes: Routes = [
     RouterModule.forChild(projectRoutes),
     MatCardModule,
   ],
-  providers: [ProjectEditResolver]
+  providers: [ProjectEditResolver],
 })
 export class ProjectAeModule { }

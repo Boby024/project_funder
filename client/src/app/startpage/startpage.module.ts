@@ -1,3 +1,4 @@
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StartpageOverviewComponent } from './startpage-overview/startpage-overview.component';
@@ -21,8 +22,9 @@ const startRoutes: Routes = [
     path: '',
     component: StartpageOverviewComponent,
   },
-  { path: 'createProject',
-    loadChildren: '../project-ae/project-ae.module#ProjectAeModule'},
+  { path: 'project/createProject',
+    loadChildren: () => import('../project-ae/project-ae.module').then(mod => mod.ProjectAeModule)
+  },
 ];
 
 
