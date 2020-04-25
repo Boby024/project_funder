@@ -1,0 +1,41 @@
+
+<div class="centerBody">
+
+  <div style="margin-top: 30px;" fxLayout="row" fxLayoutAlign="space-between">
+    <div>
+      <p><strong>Benutzer: </strong>{{creatorName}}</p>
+      <p><strong>Anzahl erstellter Projekte: </strong>{{numberProjectByCreaterId?.numberCreatedProject}}</p>
+      <p><strong>Anzahl unterstützter Projekte: </strong>{{numberProjectByCreaterId?.numberSupportedProject}}</p>
+    </div>
+    <div style="text-align: center;line-height: 100px;">
+      <p class="imageUser"></p>
+    </div>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <h1><strong>Erstellte Projekte</strong></h1>
+    <mat-card-content>
+      <div  fxLayout="row wrap">
+        <div *ngFor="let project of projects; trackBy: trackByIdentifier">
+          <app-list-project-overview [project]="project"></app-list-project-overview>
+        </div>
+      </div>
+      <p></p>
+    </mat-card-content>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div style="margin-top: 20px">
+    <h1><strong>Unterstützte Projekte</strong></h1>
+    <mat-card-content>
+      <div  fxLayout="row wrap">
+        <div *ngFor="let supportedProject of supportedProjects; trackBy: trackByIdentifier">
+          <app-list-project-overview [project]="supportedProject"></app-list-project-overview>
+        </div>
+      </div>
+    </mat-card-content>
+  </div>
+
+</div>
+

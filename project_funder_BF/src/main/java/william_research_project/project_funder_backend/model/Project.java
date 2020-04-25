@@ -179,7 +179,7 @@ public class Project {
 
     @Override
     public String toString(){
-        return "Project "+ identifier +" title= "+ title +" description= "+description+" fundinglimit= "+fundinglimit+" creatorId= "+creatorId;
+        return "Project "+ identifier +" title= "+ title +" description= "+description+" fundinglimit= "+fundinglimit+" creatorId= "+creatorId + " categorieId "+ categorieId;
     }
 
 

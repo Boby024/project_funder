@@ -23,41 +23,36 @@ export class ProjectAeService {
   getProjectById(id: any): Observable<Project> {
     return this.http.get<Project>(this.url + '/getProject/' + id)
       .pipe(
-        catchError(err => {
-          console.error('getProjectById -> failed', err);
-          return of(null);
-        })
+        catchError(this.handleError('getProjectById', null))
       );
   }
 
   createProject(data: any): Observable<Project> {
     return this.http.post<Project>(this.url + '/createProject', data, this.httpOptions)
       .pipe(
-        catchError(err => {
-          console.error('createProject -> failed', err);
-          return of(null);
-        })
+        catchError(this.handleError('createProject', null))
       );
   }
 
-  updateProject(id: number, data: any): Observable<Project> {
-    return this.http.put<Project>(this.url + '/updateProject/' + id, data, this.httpOptions)
+  updateProject(data: any): Observable<Project> {
+    return this.http.put<Project>(this.url + '/updateProject', data, this.httpOptions)
       .pipe(
-        catchError(err => {
-          console.error('updateProject -> failed', err);
-          return of(null);
-        })
+        catchError(this.handleError('updateProject', null))
       );
   }
 
   getCategories(): Observable<Categorie[]> {
     return this.http.get<Categorie []>(this.url + '/categories')
       .pipe(
-        catchError(err => {
-          console.error('getCategories -> failed', err);
-          return of([]);
-        })
+        catchError(this.handleError('getCategories', null))
       );
+  }
+
+  private handleError<T>(operation: string, result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(operation + ' -> failed', error);
+      return of(result as T);
+    };
   }
 
 }

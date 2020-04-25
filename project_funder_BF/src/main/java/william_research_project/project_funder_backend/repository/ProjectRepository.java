@@ -8,5 +8,7 @@ import java.util.List;
 public interface ProjectRepository extends JpaRepository<Project,Integer> {
     List<Project> findByIdentifier(Integer identifier);
     List<Project> findByCreatorId(Integer creatorid);
+    Project findByIdentifierAndCreatorId(Integer identifier, Integer creatorId);
+    // List<Project> findByUser (String user);
     //Project findByPredecessor(Integer predecessor);
 }

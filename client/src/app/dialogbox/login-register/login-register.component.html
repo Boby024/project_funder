@@ -19,6 +19,14 @@
         </mat-form-field>
       </div>
 
+      <div style="text-align: right">
+        <div id="loginMessage" style="display: none">
+          <mat-error>
+            Kein Benutzer erkannt
+          </mat-error>
+        </div>
+      </div>
+
       <mat-card-actions style="text-align: center"><button [disabled]="!loginDetail.valid" mat-raised-button color="primary">erstellen</button></mat-card-actions>
     </form>
   </mat-card-content>

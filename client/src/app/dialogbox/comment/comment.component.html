@@ -1,0 +1,31 @@
+<div>
+  <mat-card style="background-color: cornflowerblue; color: white">
+    <mat-card-title><span>Projekt-Name: </span>{{data.data.projectTitle}}</mat-card-title>
+  </mat-card>
+
+  <mat-card-content style="margin-top: 20px">
+    <form [formGroup]="commentData" (ngSubmit)="onSubmit()">
+      <div>
+        <mat-form-field appearance="outline" style="width: 350px">
+          <mat-label>Kommentar</mat-label>
+          <textarea matInput  formControlName="text" placeholder=" schreibe Kommentar" rows="5"></textarea>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <mat-checkbox formControlName="visibility">Anonym kommentieren ?</mat-checkbox>
+      </div><br>
+
+      <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div>
+          <button mat-raised-button color="primary" [disabled]="!commentData.valid">Kommentar hinzufügen</button>
+        </div>
+        <div>
+          <button mat-raised-button color="primary" (click)="closeComment()">abbrechen</button>
+        </div>
+      </div>
+
+    </form>
+    <div id="messageTransaction"></div>
+  </mat-card-content>
+</div>

@@ -26,7 +26,7 @@ export class ProjectEditResolver implements Resolve<any> {
             return project;
           } else {
             console.log('project with id:' + id + ' don*t exist');
-            this.router.navigate(['']);
+            this.router.navigate(['/projectfunder']);
             return null;
           }
         }));

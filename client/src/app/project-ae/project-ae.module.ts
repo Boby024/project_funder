@@ -10,18 +10,22 @@ import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatRadioModule} from '@angular/material/radio';
-import {ListProjectOverviewComponent} from '../startpage/list-project-overview/list-project-overview.component';
+import {ListProjectOverviewComponent} from '../overview-single-model/list-project-overview/list-project-overview.component';
+import {AuthGuardService} from '../auth/authentication/auth-guard.service'
+import {FlexLayoutModule} from '@angular/flex-layout';
 
 
 const projectRoutes: Routes = [
   {
     path: 'project/createProject',
     component: ProjectEditComponent,
+    canActivate: [AuthGuardService],
     resolve: {newProject: ProjectEditResolver},
   },
   {
     path: 'project/updateProject/:id',
     component: ProjectEditComponent,
+    canActivate: [AuthGuardService],
     resolve: {updateProject: ProjectEditResolver},
   }
 ];
@@ -36,8 +40,9 @@ const projectRoutes: Routes = [
     MatInputModule,
     MatFormFieldModule,
     MatRadioModule,
-    RouterModule.forChild(projectRoutes),
+    FlexLayoutModule,
     MatCardModule,
+    RouterModule.forChild(projectRoutes),
   ],
   providers: [ProjectEditResolver],
 })

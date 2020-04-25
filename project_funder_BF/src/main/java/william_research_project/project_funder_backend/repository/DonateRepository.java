@@ -9,4 +9,5 @@ public interface DonateRepository extends JpaRepository<Donate,Integer> {
     List<Donate> findAllByProject(Integer project);
     Donate findByDonatorIdAndProject(Integer donatorId, Integer project);
     List<Donate> findAllByDonatorId(Integer donatorId);
+    // List<Donate> fin
 }

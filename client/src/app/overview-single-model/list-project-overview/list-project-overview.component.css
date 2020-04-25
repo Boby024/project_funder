@@ -1,0 +1,18 @@
+
+.element{
+  border: 1px solid black;
+  border-radius: 4px;
+  width: 249px;
+  height: 200px;
+  text-align: center;
+  padding: 15px;
+  margin-left: 15px;
+  margin-top: 7px;
+}
+.elementImgae{
+  display: inline-block;
+  border: 1px solid black;
+  border-radius: 4px;
+  width: 75px;
+  height: 75px;
+}

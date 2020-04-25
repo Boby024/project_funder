@@ -9,13 +9,18 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
+import { SwitchAuthComponent } from './switch-auth/switch-auth.component';
+import { CommentComponent } from './comment/comment.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {FlexLayoutModule} from '@angular/flex-layout';
+
 
 
 
 
 
 @NgModule({
-  declarations: [LoginRegisterComponent],
+  declarations: [LoginRegisterComponent, SwitchAuthComponent, CommentComponent],
   imports: [
     CommonModule,
     MatDialogModule,
@@ -24,7 +29,9 @@ import {MatCardModule} from '@angular/material/card';
     MatButtonModule,
     MatCardModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatCheckboxModule,
+    FlexLayoutModule,
   ],
   providers: [DialogboxService]
 })

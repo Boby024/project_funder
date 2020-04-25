@@ -14,6 +14,7 @@ export class LoginRegisterComponent implements OnInit {
 
   response: any;
   user: User;
+  username: string;
   loginDetail = this.fb.group({
     username: ['', Validators.required],
     pssword: ['', Validators.required]
@@ -33,16 +34,14 @@ export class LoginRegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    this.authenticationUserService.login(JSON.stringify(this.loginDetail.value))
-      .subscribe( (data) => {
-        this.user = data;
-        console.log(data);
-        if (this.user.id) {
-          const time = '23 Apr 2020 10:00:00 UTC';
-          // const toStore = JSON.parse(this.data);
-          document.cookie = 'userData=' + JSON.stringify(data) + ';expires' + time;
-        }
-      });
+    this.authenticationUserService.login(JSON.stringify(this.loginDetail.value));
+    if (this.authenticationUserService.currentUserStatus) {
+      document.getElementById('loginMessage').style.display = 'none';
+      return true;
+    }else {
+      document.getElementById('loginMessage').style.display = 'block';
+      return false;
+    }
   }
 
 }

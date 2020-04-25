@@ -13,6 +13,7 @@ import william_research_project.project_funder_backend.repository.ProjectReposit
 
 import javax.validation.Valid;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -113,15 +114,49 @@ public class DonateController {
         return ResponseEntity.ok().body(object);
     }
 
-    @GetMapping(value = "/supportedProject/{userId}")
-    public ResponseEntity<JSONObject> supportedProject(@PathVariable(value = "userId") Integer userId) {
+    @GetMapping(value = "/listSupportedProjectByDonator/{donatorId}")
+    public List<Project> ListSupportedProjectByDonator(@PathVariable(value = "donatorId") Integer donatorId) {
+        System.out.println("List of supported projects by this donator "+ donatorId );
+        List<Project> projects = new ArrayList<>();
+        try {
+            List<Donate> donates = donateRepository.findAllByDonatorId( donatorId );
+            if (donates.size() > 0) {
+                System.out.println(donates.size());
+                for (int i = 0; i< donates.size(); i++) {
+                    System.out.println(donates.get(i).toString());
+                    Optional<Project> foundProject = projectRepository.findById(donates.get(i).getProject());
+                    if (foundProject.isPresent()) {
+                        Project finalProjectFound = foundProject.get();
+                        System.out.println(foundProject.toString());
+                        projects.add(finalProjectFound);
+                    }
+                }
+            }
+        }catch (Exception e) {
+            System.out.println("Error Found by ListSupportedProjectByDonator");
+            // projects = null;
+        }
+        return projects;
+    }
+
+    @GetMapping(value = "/numberSupportedProject/{userId}")
+    public ResponseEntity<JSONObject> numberSupportedProject(@PathVariable(value = "userId") Integer userId) {
         System.out.println("get number supported projects...");
         JSONObject object = new JSONObject();
-        object.put("supportedProjects",0);
+        object.put("numberSupportedProject",0);
+        object.put("numberCreatedProject",0);
         List<Donate> donates = donateRepository.findAllByDonatorId(userId);
-        System.out.println("number => "+donates.size() );
-        object.replace("supportedProjects",donates.size());
+        List<Project> projects = projectRepository.findByCreatorId(userId);
+        System.out.println("numberSupportedProject => "+donates.size() );
+        System.out.println("numberCreatedProject => "+projects.size() );
+        object.replace("numberSupportedProject",donates.size());
+        object.replace("numberCreatedProject", projects.size());
         return ResponseEntity.ok().body(object);
     }
 
+    @GetMapping(value = "/listDonationByProjectId/{projectId}")
+    public List<Donate> ListDonateByProjectId(@PathVariable(value = "projectId") Integer projectId) {
+        System.out.println("list of donation By ProjectId");
+        return donateRepository.findAllByProject(projectId);
+    }
 }

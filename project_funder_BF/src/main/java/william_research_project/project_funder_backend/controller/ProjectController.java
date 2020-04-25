@@ -32,10 +32,10 @@ public class ProjectController {
     public Project createProject(@Valid @RequestBody Project project) {
         System.out.println("store project...");
         System.out.println(project);
-        Integer id = project.getCreatorId();
         Instant timestamp = Instant.now();
+        String status = "active";
         Project _project = projectRepository.save(new Project(project.getTitle(),project.getDescription(),
-                project.getStatus(),project.getFundinglimit(),project.getCreatorId(),project.getPredecessor(),project.getCategorieId(),
+                status,project.getFundinglimit(),project.getCreatorId(),project.getPredecessor(),project.getCategorieId(),
                 timestamp) );
         return _project;
     }
@@ -56,18 +56,24 @@ public class ProjectController {
         return projects;
     }
 
-    @PutMapping("/updateProject/{projectId}")
-    public ResponseEntity<Project> updateProject(@PathVariable(value = "projectId") Integer projectId, @Valid @RequestBody Project project)
-            throws ResourceNotFoundException{
-        System.out.println("Get Project number with ID = " + projectId + "...");
-        Project _project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ResourceNotFoundException("Project not found for this id :: " + projectId));
-        _project.setTitle(project.getTitle());
-        _project.setDescription(project.getDescription());
-        _project.setFundinglimit(project.getFundinglimit());
-        _project.setPredecessor(project.getPredecessor());
-        _project.setCategorieId(project.getCategorieId());
-        final Project updateProject = projectRepository.save(_project);
+    @PutMapping("/updateProject")
+    public ResponseEntity<Project> updateProject(@Valid @RequestBody Project project) {
+        System.out.println("Get Project number with ID = " + project.getIdentifier() + "...");
+        System.out.println(project.toString());
+        Project updateProject = new Project();
+        try {
+            Project _project = projectRepository.findByIdentifierAndCreatorId(project.getIdentifier(), project.getCreatorId());
+            System.out.println(_project.toString());
+            // .orElseThrow(() -> new ResourceNotFoundException("Project not found for this id :: " + project.getIdentifier()));
+            _project.setTitle(project.getTitle());
+            _project.setDescription(project.getDescription());
+            _project.setFundinglimit(project.getFundinglimit());
+            _project.setPredecessor(project.getPredecessor());
+            _project.setCategorieId(project.getCategorieId());
+            updateProject = projectRepository.save(_project);
+        }catch (Exception e){
+            System.out.println("This project  with this project id "+ project.getIdentifier()+" could not update with this user id " + project.getCreatorId());
+        }
         return ResponseEntity.ok(updateProject);
     }
 

@@ -38,6 +38,15 @@ public class Annotate {
     @JoinColumn(name = "comments",referencedColumnName = "id")
     private Comment comments;
 
+
+    public String getUser() {return this.user.getUsername();}
+    public void setUser(User user) {
+        this.user = user;
+    }
+    @ManyToOne(optional = false)//(cascade = CascadeType.ALL)
+    @JoinColumn( name = "userid",referencedColumnName = "id",insertable = false,updatable = false) // referencedColumnName = "id"
+    private User user;
+
     public Annotate() {}
     public Annotate(Integer userId, Integer project, Integer comment) {
         this.userId = userId;

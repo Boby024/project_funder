@@ -2,6 +2,7 @@ package william_research_project.project_funder_backend.model;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Table(name = "donate")
@@ -33,6 +34,26 @@ public class Donate {
 
     @Column(name = "createddate")
     private Instant createddate;
+
+
+    public String getUser() {return this.user.getUsername();}
+    public void setUser(User user) {
+        this.user = user;
+    }
+    @ManyToOne(optional = false)//(cascade = CascadeType.ALL)
+    @JoinColumn( name = "donatorid",referencedColumnName = "id",insertable = false,updatable = false) // referencedColumnName = "id"
+    private User user;
+
+    /*
+    public List<Project> getSupportedProject() {
+        return supportedProject;
+    }
+    public void setSupportedProject(List<Project> supportedProject) {
+        this.supportedProject = supportedProject;
+    }
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "project",referencedColumnName = "identifier",insertable = false,updatable = false)// referencedColumnName = "id")
+    private List<Project> supportedProject; */
 
     public Donate() {}
     public Donate(Integer donatorId,Integer project, Double donationamount, String visibility, Instant createddate) {

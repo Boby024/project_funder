@@ -6,7 +6,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {StartpageService} from './startpage.service';
 import {HttpClientModule} from '@angular/common/http';
 import {HeaderModule} from '../header/header.module';
-import { ListProjectOverviewComponent } from './list-project-overview/list-project-overview.component';
+import { ListProjectOverviewComponent } from '../overview-single-model/list-project-overview/list-project-overview.component';
 
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatCardModule} from '@angular/material/card';
@@ -14,25 +14,30 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {ProjectAeModule} from '../project-ae/project-ae.module';
+import {SingleViewPageModule} from '../single-view-page/single-view-page.module';
+import {OverviewSingleModelModule} from '../overview-single-model/overview-single-model.module';
 
 
 
 const startRoutes: Routes = [
   {
-    path: '',
+    path: 'projectfunder',
     component: StartpageOverviewComponent,
   },
   { path: 'project/createProject',
-    loadChildren: () => import('../project-ae/project-ae.module').then(mod => mod.ProjectAeModule)
+    loadChildren: () => import('../project-ae/project-ae.module').then(mod => mod.ProjectAeModule),
+  },
+  { path: 'project/view_project',
+    loadChildren: () => import('../single-view-page/single-view-page.module').then(mod => mod.SingleViewPageModule),
   },
 ];
 
 
 @NgModule({
-  declarations: [StartpageOverviewComponent, ListProjectOverviewComponent],
+  declarations: [StartpageOverviewComponent],
   exports: [
     RouterModule,
-    StartpageOverviewComponent
+    StartpageOverviewComponent,
   ],
   imports: [
     CommonModule,
@@ -42,9 +47,11 @@ const startRoutes: Routes = [
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    ProjectAeModule,
-    RouterModule.forChild(startRoutes),
     MatButtonModule,
+    ProjectAeModule,
+    SingleViewPageModule,
+    OverviewSingleModelModule,
+    RouterModule.forChild(startRoutes),
   ],
   providers: [StartpageService] // [StartpageService]
 })

@@ -12,9 +12,14 @@ const appRoutes: Routes = [
   // {path: 'header', component: HeaderOverviewComponent},
   // {path: '', component: AppComponent},
   {
-    path: 'start',
+    path: 'projectfunder',
     loadChildren: () => import('./startpage/startpage.module').then(mod => mod.StartpageModule)
   },
+  {
+    path: '',
+    redirectTo: '/projectfunder',
+    pathMatch: 'full',
+  }
 ];
 
 @NgModule({

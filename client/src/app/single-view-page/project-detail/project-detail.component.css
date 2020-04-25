@@ -1,5 +1,6 @@
 
-.element{
+/*
+.project_view_center{
   border: 1px solid black;
   border-radius: 4px;
   width: 249px;
@@ -9,11 +10,13 @@
   margin-left: 15px;
   margin-top: 7px;
 }
-.elementImgae{
-  display: inline-block;
+ */
+
+
+.image_view_project{
   border: 1px solid black;
   border-radius: 4px;
   width: 75px;
   height: 75px;
+  margin:auto;
 }
-

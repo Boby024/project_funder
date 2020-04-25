@@ -1,0 +1,76 @@
+
+
+<div style="margin-top: 20px; text-align: center">
+  <h1><strong>Informationen</strong></h1>
+</div>
+
+<div class="centerBody">
+  <div style="margin-top: 70px;">
+    <div fxLayout="column" fxLayoutGap="20px">
+      <div style="text-align: center">
+        <div class="project_view_center" style="text-align: center">
+          <div class="image_view_project"></div>
+          <div>
+            <p style="margin-top: 10px">{{detailProject.title}}</p>
+            <p><strong>von</strong> {{detailProject.user}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <mat-card-content>
+          <p><strong>Finanzierungslimit:</strong> {{detailProject.fundinglimit}}</p>
+          <p><strong>Aktuelle Spendensumme:</strong> {{donate?.donationAmount}} €</p>
+          <p><strong>Status:</strong> {{detailProject.status}}</p>
+          <div>
+            <p *ngIf="projectPredecessor">
+              <strong>Vorgänger-Projekt: </strong>
+              <span  style="color: cornflowerblue" [routerLink]="['/projectfunder/view_project/', projectPredecessor.identifier]" routerLinkActive="active-link">{{projectPredecessor.title}}</span>
+            </p>
+            <p *ngIf="!projectPredecessor">
+              <strong>Vorgänger-Projekt: </strong> Kein Vorgänger
+            </p>
+          </div>
+        </mat-card-content>
+      </div>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div style="margin-top: 20px">
+    <h1><strong>Aktionsleiste</strong></h1>
+    <mat-card-content>
+      <div fxLayoutAlign="center" fxLayout="row" fxLayoutGap="20px">
+        <div><button style="background: green" mat-raised-button color="primary"> Spenden</button></div>
+        <div><button  style="background: red" mat-raised-button color="primary" (click)="deleteProject()"> Projekt Löschen</button></div>
+        <div><button mat-raised-button color="primary" (click)="goEdit()"> Projekt Editieren</button></div>
+      </div>
+      <p></p>
+    </mat-card-content>
+  </div>
+
+  <mat-divider></mat-divider>
+  <div style="margin-top: 20px">
+    <h1><strong>Liste der Spender</strong></h1>
+    <div fxLayout="row" fxLayoutGap="5px" *ngFor="let donator of donates; trackBy: trackById">
+      <div *ngIf="donator.visibility == 'public'"> <span>{{donator.user}}:  </span>{{donator.donationamount}} €</div>
+      <div *ngIf="donator.visibility == 'privat'"> <span>          Anonym:  </span>{{donator.donationamount}} €</div>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+  <div style="margin-top: 20px">
+    <h1><strong>Kommentare</strong></h1>
+    <div fxLayout="row" fxLayoutGap="5px" *ngFor="let annotate of annotates; trackBy: trackById">
+      <div *ngIf="annotate.comments.visibility == 'public'"> <span>{{annotate.user}}:   </span> {{annotate.comments.text}}</div>
+      <div *ngIf="annotate.comments.visibility == 'privat'"> <span>  Anonym:   </span> {{annotate.comments.text}}</div>
+    </div>
+  </div>
+
+  <div fxLayoutAlign="end">
+    <button style="background: green" mat-raised-button color="primary" (click)="comment()">Kommentieren</button>
+  </div>
+</div>
+
+

@@ -28,6 +28,10 @@ export class StartpageOverviewComponent implements OnInit {
     });
   }
 
+  trackByIdentifier(index: number, project: any): string {
+    return project.identifier;
+  }
+
   onKey(value: string) {
     this.searchWord = value;
     console.log(this.searchWord);

@@ -1,11 +1,32 @@
 
-<mat-toolbar fxLayout="row" fxLayoutAlign="space-between">
+<mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
 
   <div>
-    <button mat-raised-button color="primary" [routerLink]="['']">Home</button>
+    <button mat-icon-button color="primary" [routerLink]="['/projectfunder']">
+      <mat-icon>home</mat-icon>
+    </button>
   </div>
   <div style="font-size: 25px" [routerLink]="['']">Project Funder</div>
-  <div (click)="openDialog()">sign in</div>
+  <div fxLayout="row" fxLayoutGap="20px">
+    <div *ngIf="statusUser() === true">
+      <p>{{username}}</p>
+    </div>
+    <div *ngIf="statusUser() === false">
+      <p>log in</p>
+    </div>
+
+    <div>
+      <button  style="background: cornflowerblue" mat-fab [matMenuTriggerFor]="beforeMenu">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black" width="18px" height="18px"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2m0 9c2.7 0 5.8 1.29 6 2v1H6v-.99c.2-.72 3.3-2.01 6-2.01m0-11C9.79 4 8 5.79 8 8s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 9c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4z"/></svg>
+      </button>
+      <mat-menu #beforeMenu="matMenu" xPosition="before">
+        <button mat-menu-item (click)="goToProfil()">Profil</button>
+        <button mat-menu-item *ngIf="statusUser() === true" (click)="logOut()">logOut</button>
+        <button mat-menu-item *ngIf="statusUser() === false" (click)="openDialog()">logIn</button>
+      </mat-menu>
+    </div>
+
+  </div>
 
 </mat-toolbar>
 
