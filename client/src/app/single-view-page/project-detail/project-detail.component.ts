@@ -6,13 +6,13 @@ import {Project} from '../../../assets/models/project';
 import {Donate} from '../../../assets/models/donate';
 import {Annotate} from '../../../assets/models/annotate';
 import {MatDialog} from '@angular/material/dialog';
-import {CommentComponent} from '../../dialogbox/comment/comment.component';
 import {AuthenticationUserService} from '../../auth/authentication/authentication-user.service';
 import {SwitchAuthComponent} from '../../dialogbox/switch-auth/switch-auth.component';
 
 
-export interface DialogDataCComment {
+export interface DialogDataComment {
   data: any;
+  action: string;
 }
 @Component({
   selector: 'app-project-detail',
@@ -26,6 +26,10 @@ export class ProjectDetailComponent implements OnInit {
   projectPredecessor: Project;
   donates: Donate [];
   annotates: Annotate[];
+
+  userId: any;
+  projectId: any;
+  hiddenComment: boolean;
 
   constructor(private fb: FormBuilder,
               public dialog: MatDialog,
@@ -83,20 +87,19 @@ export class ProjectDetailComponent implements OnInit {
     return donate.user;
   }
 
-  openDialogNotLogged(): void {
+  openDialogNotLogged(action: string): void {
     const dialogRef = this.dialog.open(SwitchAuthComponent, {
       width: '500px',
+      disableClose: true,
+      data: {action}
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed ' + result);
     });
   }
-  closeDialog() {
-    this.dialog.closeAll();
-  }
 
-  comment(): void {
+  /*comment(): void {
     if (this.authenticationUserService.getSessionStorage()) {
       const userData = this.authenticationUserService.getSessionStoragePassingData();
       const dialogRef = this.dialog.open(CommentComponent, {
@@ -109,16 +112,52 @@ export class ProjectDetailComponent implements OnInit {
         const feedback = result;
         this.commentsProjetcId(this.detailProject.identifier);
       });
+
     }else {
       this.openDialogNotLogged();
+    }
+  } */
+  doComment() {
+    if (this.authenticationUserService.getSessionStorage()) {
+      this.userId = this.authenticationUserService.getSessionStoragePassingData().id;
+      this.projectId = this.detailProject.identifier;
+      document.getElementById('hideBtnMainComment').style.display = 'none';
+      document.getElementById('doComment').style.display = 'block';
+    }else {
+      this.openDialogNotLogged('Um <strong>kommentieren</strong> zu können, müssen Sie eingeloggt werden');
+    }
+  }
+  catchStatusComent(event) {
+    this.hiddenComment = event;
+    console.log(this.hiddenComment);
+    if (this.hiddenComment) {
+      this.commentsProjetcId(this.projectId);
+      document.getElementById('doComment').style.display = 'none';
+      document.getElementById('hideBtnMainComment').style.display = 'block';
+    }else {
+      document.getElementById('doComment').style.display = 'none';
+      document.getElementById('hideBtnMainComment').style.display = 'block';
     }
   }
 
   goEdit() {
-    const creatorid = this.authenticationUserService.getSessionStoragePassingData().id;
-    if (this.detailProject.creatorId === creatorid) {
-      this.router.navigate(['/project/updateProject/', this.detailProject.identifier]);
+    if (this.authenticationUserService.currentUserStatus) {
+      const creatorid = this.authenticationUserService.getSessionStoragePassingData().id;
+      if (this.detailProject.creatorId === creatorid) {
+        this.router.navigate(['/project/updateProject/', this.detailProject.identifier]);
+      }else {
+        this.openDialogNotLogged('Für dieses Projekt haben Sie kein Recht zum Editieren');
+      }
+    }else {
+      this.openDialogNotLogged('Um <strong>editieren</strong> zu können, müssen Sie eingeloggt werden');
     }
   }
   deleteProject() {}
+  donateFunction() {
+    if (this.authenticationUserService.currentUserStatus) {
+      this.router.navigate(['/projectfunder/project_fund/id/', this.detailProject.identifier]);
+    }else {
+      this.openDialogNotLogged('Um <strong>spenden</strong> zu können, müssen Sie eingeloggt werden');
+    }
+  }
 }

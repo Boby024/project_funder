@@ -10,9 +10,9 @@ import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
 import {MatRadioModule} from '@angular/material/radio';
-import {ListProjectOverviewComponent} from '../overview-single-model/list-project-overview/list-project-overview.component';
-import {AuthGuardService} from '../auth/authentication/auth-guard.service'
+import {AuthGuardService} from '../auth/authentication/auth-guard.service';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import {TextFieldModule} from '@angular/cdk/text-field';
 
 
 const projectRoutes: Routes = [
@@ -42,6 +42,7 @@ const projectRoutes: Routes = [
     MatRadioModule,
     FlexLayoutModule,
     MatCardModule,
+    TextFieldModule,
     RouterModule.forChild(projectRoutes),
   ],
   providers: [ProjectEditResolver],

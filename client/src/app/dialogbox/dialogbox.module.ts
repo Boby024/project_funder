@@ -13,10 +13,7 @@ import { SwitchAuthComponent } from './switch-auth/switch-auth.component';
 import { CommentComponent } from './comment/comment.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {FlexLayoutModule} from '@angular/flex-layout';
-
-
-
-
+import {RouterModule} from '@angular/router';
 
 
 @NgModule({
@@ -32,6 +29,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
     ReactiveFormsModule,
     MatCheckboxModule,
     FlexLayoutModule,
+    RouterModule,
   ],
   providers: [DialogboxService]
 })

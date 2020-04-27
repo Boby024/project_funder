@@ -9,6 +9,16 @@
           <mat-form-field appearance="outline" style="width: 450px">
             <mat-label>Titel</mat-label>
             <input type="text" matInput placeholder="Titel" formControlName="title">
+
+            <mat-error *ngIf="title.invalid && (title.dirty || title.touched)">
+              <div *ngIf="title.errors.minlength">
+                Titel muss mindestens auf 3 Buchstaben bestehen.
+              </div>
+              <div *ngIf="title.errors.maxlength">
+                Titel muss maximal auf 50 Buchstaben bestehen.
+              </div>
+            </mat-error>
+
           </mat-form-field>
         </div>
 
@@ -49,16 +59,25 @@
 
         <div fxLayoutAlign="center" fxLayout="row">
           <div><mat-label><strong>Beschreibung:</strong> </mat-label></div>
-          <div style="border: 1px solid white; width: auto; height: auto">
+          <div>
             <mat-form-field appearance="outline" style="width: 350px">
-              <textarea matInput  formControlName="description" placeholder="description" rows="5"></textarea>
+              <textarea matInput  formControlName="description" placeholder="description"
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="2"
+                        cdkAutosizeMaxRows="20"></textarea>
             </mat-form-field>
           </div>
         </div>
 
-        <div fxLayoutAlign="center">
-          <mat-card-actions><button [disabled]="!project.valid" mat-raised-button color="primary">aktualisieren</button></mat-card-actions>
+        <div fxLayout="row" fxLayoutAlign="space-between">
+          <div>
+            <mat-card-actions><button [disabled]="!project.valid" mat-raised-button color="primary">aktualisieren</button></mat-card-actions>
+          </div>
+          <div>
+            <button mat-raised-button color="primary" (click)="deleteAction()">abbrechen</button>
+          </div>
         </div>
+
       </form>
       <div id="messageUpdate"></div>
     </mat-card-content>
@@ -74,6 +93,16 @@
             <mat-form-field appearance="outline" style="width: 450px">
               <mat-label>Titel</mat-label>
               <input type="text" matInput placeholder="Titel" formControlName="title">
+
+              <mat-error *ngIf="title.invalid && (title.dirty || title.touched)">
+                <div *ngIf="title.errors.minlength">
+                  Titel muss mindestens auf 3 Buchstaben bestehen.
+                </div>
+                <div *ngIf="title.errors.maxlength">
+                  Titel muss maximal auf 50 Buchstaben bestehen.
+                </div>
+              </mat-error>
+
             </mat-form-field>
           </div>
 
@@ -108,6 +137,7 @@
                 <mat-radio-button *ngFor="let projectPredecessor of projects; trackBy: trackByIdentifier" [value]="projectPredecessor.identifier">
                   {{projectPredecessor.title}}
                 </mat-radio-button>
+                <mat-radio-button>Kein Vorgänger</mat-radio-button>
               </mat-radio-group>
             </div>
           </div>
@@ -121,9 +151,15 @@
             </div>
           </div>
 
-          <div fxLayoutAlign="center">
-            <mat-card-actions><button [disabled]="!projectCreate.valid" mat-raised-button color="primary">erstellen</button></mat-card-actions>
+          <div fxLayout="row" fxLayoutAlign="space-between">
+            <div>
+              <mat-card-actions><button [disabled]="!projectCreate.valid" mat-raised-button color="primary">erstellen</button></mat-card-actions>
+            </div>
+            <div>
+              <button mat-raised-button color="primary" (click)="deleteAction()">abbrechen</button>
+            </div>
           </div>
+
         </form>
         <div id="messageCreate"></div>
       </mat-card-content>

@@ -1,33 +1,52 @@
 <div>
   <mat-card style="background-color: cornflowerblue; color: white">
-    <mat-card-title>Login</mat-card-title>
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <div><mat-card-title>Login</mat-card-title></div>
+      <div (click)="onNoClick()">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+      </div>
+    </div>
   </mat-card>
 
   <mat-card-content style="margin-top: 20px">
     <form [formGroup]="loginDetail" (ngSubmit)="onSubmit()">
-      <div>
-        <mat-form-field appearance="outline" style="width: 450px">
-          <mat-label>Username</mat-label>
-          <input type="text" matInput placeholder="username" formControlName="username">
-        </mat-form-field>
-      </div>
+      <div fxLayout="column" fxLayoutGap="5px">
+        <div>
+          <mat-form-field appearance="outline" fxFlex style="width: 450px">
+            <mat-label>Username</mat-label>
+            <input type="text" matInput placeholder="username" formControlName="username">
+          </mat-form-field>
+        </div>
 
-      <div>
-        <mat-form-field appearance="outline" style="width: 450px">
-          <mat-label>Kennwort</mat-label>
-          <input type="password" matInput placeholder="kennwort" formControlName="pssword">
-        </mat-form-field>
-      </div>
+        <div>
+          <mat-form-field appearance="outline"   fxFlex style="width: 450px">
+            <mat-label>Kennwort</mat-label>
+            <input type="password" matInput placeholder="kennwort" formControlName="pssword">
+          </mat-form-field>
+        </div>
 
-      <div style="text-align: right">
-        <div id="loginMessage" style="display: none">
-          <mat-error>
-            Kein Benutzer erkannt
-          </mat-error>
+        <div fxFlexAlign="right">
+          <div id="loginMessage" style="display: none">
+            <mat-error>
+              Username oder Kennwort ist falsch !
+            </mat-error>
+          </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="space-between">
+          <div>
+            <mat-card-actions style="text-align: center">
+              <button [disabled]="!loginDetail.valid" mat-raised-button color="primary">erstellen</button>
+            </mat-card-actions>
+          </div>
+          <div>
+            <mat-card-actions style="text-align: center">
+              <button mat-raised-button color="primary">registrieren</button>
+            </mat-card-actions>
+          </div>
         </div>
       </div>
 
-      <mat-card-actions style="text-align: center"><button [disabled]="!loginDetail.valid" mat-raised-button color="primary">erstellen</button></mat-card-actions>
     </form>
   </mat-card-content>
 </div>

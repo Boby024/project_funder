@@ -12,3 +12,21 @@ export interface Project {
   user?: string;
   project?: Project[];
 }
+
+export class ProjectClass implements Project{
+  categorieId: number;
+  createddate: string;
+  creatorId: number;
+  description: string;
+  fundinglimit: number;
+  identifier: number;
+  image: any;
+  predecessor: number;
+  project: Project[];
+  status: string;
+  title: string;
+  user: string;
+
+  // constructor() {}
+
+}

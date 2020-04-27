@@ -6,7 +6,6 @@ import {RouterModule, Routes} from '@angular/router';
 import {StartpageService} from './startpage.service';
 import {HttpClientModule} from '@angular/common/http';
 import {HeaderModule} from '../header/header.module';
-import { ListProjectOverviewComponent } from '../overview-single-model/list-project-overview/list-project-overview.component';
 
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {MatCardModule} from '@angular/material/card';
@@ -16,7 +15,6 @@ import {MatButtonModule} from '@angular/material/button';
 import {ProjectAeModule} from '../project-ae/project-ae.module';
 import {SingleViewPageModule} from '../single-view-page/single-view-page.module';
 import {OverviewSingleModelModule} from '../overview-single-model/overview-single-model.module';
-
 
 
 const startRoutes: Routes = [

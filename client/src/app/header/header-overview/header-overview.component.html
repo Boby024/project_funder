@@ -21,8 +21,9 @@
       </button>
       <mat-menu #beforeMenu="matMenu" xPosition="before">
         <button mat-menu-item (click)="goToProfil()">Profil</button>
-        <button mat-menu-item *ngIf="statusUser() === true" (click)="logOut()">logOut</button>
-        <button mat-menu-item *ngIf="statusUser() === false" (click)="openDialog()">logIn</button>
+        <button mat-menu-item *ngIf="statusUser() === true" (click)="logOut()">LogOut</button>
+        <button mat-menu-item *ngIf="statusUser() === false" (click)="openDialog()">LogIn</button>
+        <button mat-menu-item *ngIf="statusUser() === false" (click)="goToRegister()">Register</button>
       </mat-menu>
     </div>
 

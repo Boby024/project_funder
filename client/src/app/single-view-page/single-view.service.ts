@@ -7,6 +7,7 @@ import {Donate} from '../../assets/models/donate';
 import {Annotate} from '../../assets/models/annotate';
 import {CommentCompletForm} from '../../assets/models/commentCompletForm';
 import {NumberProjectByCreaterId} from '../../assets/models/numberProjectByCreaterId';
+import {FeedbackDonate} from '../../assets/models/feedbackDonate';
 
 @Injectable({
   providedIn: 'root'
@@ -66,11 +67,23 @@ export class SingleViewService {
         catchError(this.handleError('userProjects', null))
       );
   }
+  userProjectsByUsername(username: string): Observable<Project[]> {
+    return this.http.get<Project []>(this.url + '/userProjectsByUsername/' + username)
+      .pipe(
+        catchError(this.handleError('userProjects', null))
+      );
+  }
 
   numberSupportedProject(userId: number): Observable<NumberProjectByCreaterId> {
     return this.http.get<NumberProjectByCreaterId>(this.url + '/numberSupportedProject/' + userId)
       .pipe(
         catchError( this.handleError('numberSupportedProject', null) )
+      );
+  }
+  donateMoney(data: any): Observable<FeedbackDonate> {
+    return this.http.post<FeedbackDonate>(this.url + '/donateMoney', data, this.httpOptions)
+      .pipe(
+        catchError( this.handleError('donateMoney', null) )
       );
   }
   private handleError<T>(operation: string, result?: T) {

@@ -5,6 +5,9 @@ import {Observable} from 'rxjs';
 import {MatDialog} from '@angular/material/dialog';
 import {SwitchAuthComponent} from '../../dialogbox/switch-auth/switch-auth.component';
 
+export interface DialogDataAuth {
+  action: string;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -21,22 +24,19 @@ export class AuthGuardService implements CanActivate {
     }
     const url: string = state.url;
     console.log(url);
+    this.openDialog('Für diese Seite brauchen Sie ein Account.');
     // this.router.navigate(['/projectfunder']);
-    this.openDialog();
-    // this.router.navigate(['/projectfunder']);
-    setTimeout( () => {this.closeDialog(); return false; } , 2000);
+    // setTimeout( () => {this.closeDialog(); return false; } , 2000);
   }
 
-  openDialog(): void {
+  openDialog(action: string): void {
     const dialogRef = this.dialog.open(SwitchAuthComponent, {
       width: '500px',
+      data: {action},
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed ' + result);
     });
-  }
-  closeDialog() {
-    this.dialog.closeAll();
   }
 }

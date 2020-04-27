@@ -5,11 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import william_research_project.project_funder_backend.exception.ResourceNotFoundException;
 import william_research_project.project_funder_backend.model.Project;
+import william_research_project.project_funder_backend.model.User;
 import william_research_project.project_funder_backend.repository.ProjectRepository;
 import william_research_project.project_funder_backend.repository.UserRepository;
 
 import javax.validation.Valid;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8080")
@@ -53,6 +55,19 @@ public class ProjectController {
     public List<Project> userProjects(@PathVariable(value = "creatorid") Integer creatorid) {
         System.out.println("Get projects from user with ID = " + creatorid + "...");
         List<Project> projects = projectRepository.findByCreatorId(creatorid);
+        return projects;
+    }
+
+    @GetMapping("/userProjectsByUsername/{username}")
+    public List<Project> userProjectsByUsername(@PathVariable(value = "username") String username) {
+        System.out.println("Get projects from user with ID = " + username + "...");
+        List<Project> projects = new ArrayList<>();
+        try {
+            User user = userRepository.findByUsername(username);
+            projects = projectRepository.findByCreatorId(user.getId());
+        }catch (Exception e){
+            System.out.println("No projects from user with username = " + username + "...");
+        }
         return projects;
     }
 

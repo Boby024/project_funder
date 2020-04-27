@@ -3,10 +3,10 @@ import {MatDialog} from '@angular/material/dialog';
 import {LoginRegisterComponent} from '../../dialogbox/login-register/login-register.component';
 import {AuthenticationUserService} from '../../auth/authentication/authentication-user.service';
 import {Router} from '@angular/router';
+import {SwitchAuthComponent} from '../../dialogbox/switch-auth/switch-auth.component';
 
-export interface DialogDataLoginRegister {
-  login: {};
-  register: {};
+export interface DialogDataHeader {
+  action: any;
 }
 
 @Component({
@@ -27,7 +27,8 @@ export class HeaderOverviewComponent implements OnInit {
   openDialog(): void {
     const dialogRef = this.dialog.open(LoginRegisterComponent, {
       width: '500px',
-      data: {loginData: this.login, registerData: this.register}
+      disableClose: true,
+      data: {action: 'login'}
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -56,6 +57,23 @@ export class HeaderOverviewComponent implements OnInit {
   goToProfil() {
     if (this.authenticationUserService.currentUserStatus) {
       this.router.navigate(['/projectfunder/view_profil/', this.username]);
+    }else {
+      this.openDialogNotLogged('Zuerst brauchen Sie ein Konto');
     }
+  }
+
+  openDialogNotLogged(action: string): void {
+    const dialogRef = this.dialog.open(SwitchAuthComponent, {
+      width: '500px',
+      disableClose: true,
+      data: {action}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed ' + result);
+    });
+  }
+  goToRegister() {
+    this.router.navigate(['/projectfunder/register']);
   }
 }

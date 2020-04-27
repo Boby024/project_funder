@@ -1,6 +1,6 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {DialogDataLoginRegister} from '../../header/header-overview/header-overview.component';
+import {DialogDataHeader} from '../../header/header-overview/header-overview.component';
 import {FormBuilder, Validators} from '@angular/forms';
 import {AuthenticationUserService} from '../../auth/authentication/authentication-user.service';
 import {User} from '../../../assets/models/user';
@@ -22,7 +22,7 @@ export class LoginRegisterComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<LoginRegisterComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogDataLoginRegister,
+    @Inject(MAT_DIALOG_DATA) public data: DialogDataHeader,
     private fb: FormBuilder,
     private authenticationUserService: AuthenticationUserService) {}
 
@@ -36,11 +36,8 @@ export class LoginRegisterComponent implements OnInit {
   onSubmit() {
     this.authenticationUserService.login(JSON.stringify(this.loginDetail.value));
     if (this.authenticationUserService.currentUserStatus) {
-      document.getElementById('loginMessage').style.display = 'none';
-      return true;
     }else {
       document.getElementById('loginMessage').style.display = 'block';
-      return false;
     }
   }
 

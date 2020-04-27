@@ -1,14 +1,14 @@
 
 <div class="centerBody">
 
-  <div style="display: flex; flex-direction: row; justify-content: space-between ;margin-bottom: 15px; margin-top: 15px;">
+  <div fxLayout="row" fxLayoutAlign="space-between" style="margin-bottom: 15px; margin-top: 15px;">
     <div>
-      <button mat-raised-button color="primary" [routerLink]="['/project/createProject']">create project</button>
+      <button mat-raised-button color="primary" (click)="goCreateProject()">create project</button>
     </div>
 
     <div>
       <form>
-        <mat-form-field appearance="outline" style="width: 350px">
+        <mat-form-field appearance="outline" fxFlex style="width: 350px">
           <mat-label>search project</mat-label>
           <input matInput placeholder="search a project..." #box (keyup)="onKey(box.value)">
         </mat-form-field>
@@ -16,7 +16,7 @@
     </div>
   </div>
 
-  <div style="text-align: center; margin-bottom: 15px; margin-top: 15px;">
+  <div fxLayoutAlign="center" style="margin-bottom: 15px; margin-top: 15px;">
     <mat-card-title style="width: 300px">Offne Projekte</mat-card-title>
   </div>
   <div  fxLayout="row wrap">
@@ -26,7 +26,7 @@
   </div>
 
 
-  <div style="text-align: center; margin-bottom: 15px; margin-top: 15px;">
+  <div fxLayoutAlign="center" style="margin-bottom: 15px; margin-top: 15px;">
     <mat-card-title style="width: 300px">Abgeschlossne Projekte</mat-card-title>
   </div>
   <div   fxLayout="row wrap">

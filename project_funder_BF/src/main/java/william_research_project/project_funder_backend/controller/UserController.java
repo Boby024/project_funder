@@ -7,12 +7,15 @@ import org.springframework.web.bind.annotation.*;
 
 import william_research_project.project_funder_backend.exception.ResourceNotFoundException;
 import william_research_project.project_funder_backend.model.Account;
+import william_research_project.project_funder_backend.model.Project;
 import william_research_project.project_funder_backend.model.User;
 import william_research_project.project_funder_backend.repository.AccountRepository;
+import william_research_project.project_funder_backend.repository.ProjectRepository;
 import william_research_project.project_funder_backend.repository.UserRepository;
 
 import javax.validation.Valid;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +31,9 @@ public class UserController {
 
     @Autowired
     AccountRepository accountRepository;
+
+    @Autowired
+    ProjectRepository projectRepository;
 
     @PostMapping(value = "/login")
     public ResponseEntity<JSONObject> login(@Valid @RequestBody User user) {
@@ -98,6 +104,22 @@ public class UserController {
         return ResponseEntity.ok().body(user);
     }
 
+    @GetMapping("/getUserByUsername/{username}")
+    public ResponseEntity<JSONObject> getUserByUsername(@PathVariable(value = "username") String  username) {
+        System.out.println("Get User with Username = " + username + "...");
+        JSONObject object = new JSONObject();
+        object.put("id",null);
+        object.put("username",null);
+        try {
+            User user = userRepository.findByUsername(username);
+            object.replace("id", user.getId());
+            object.replace("username", user.getUsername());
+        }catch (Exception e) {
+            System.out.println("User with Username " + username + " don't exist" );
+        }
+        return ResponseEntity.ok().body(object);
+    }
+
     @PutMapping("/putUser/{id}")
     public ResponseEntity<User> updateUser(@PathVariable(value = "id") Integer userId, @Valid @RequestBody User user)
         throws ResourceNotFoundException {
@@ -129,5 +151,4 @@ public class UserController {
         response.put("deleted", Boolean.TRUE);
         return response;
     }
-
 }

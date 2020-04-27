@@ -10,7 +10,6 @@ import {DataAuthService} from '../data-auth.service';
 })
 export class AuthenticationUserService {
   user: User;
-  statusLogin: boolean;
 
   constructor(private dataAuthService: DataAuthService) {
   }

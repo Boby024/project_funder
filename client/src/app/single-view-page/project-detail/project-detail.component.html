@@ -19,7 +19,7 @@
 
       <div>
         <mat-card-content>
-          <p><strong>Finanzierungslimit:</strong> {{detailProject.fundinglimit}}</p>
+          <p><strong>Finanzierungslimit:</strong> {{detailProject.fundinglimit}} €</p>
           <p><strong>Aktuelle Spendensumme:</strong> {{donate?.donationAmount}} €</p>
           <p><strong>Status:</strong> {{detailProject.status}}</p>
           <div>
@@ -42,7 +42,7 @@
     <h1><strong>Aktionsleiste</strong></h1>
     <mat-card-content>
       <div fxLayoutAlign="center" fxLayout="row" fxLayoutGap="20px">
-        <div><button style="background: green" mat-raised-button color="primary"> Spenden</button></div>
+        <div><button style="background: green" mat-raised-button color="primary" (click)="donateFunction()"> Spenden</button></div>
         <div><button  style="background: red" mat-raised-button color="primary" (click)="deleteProject()"> Projekt Löschen</button></div>
         <div><button mat-raised-button color="primary" (click)="goEdit()"> Projekt Editieren</button></div>
       </div>
@@ -63,13 +63,20 @@
   <div style="margin-top: 20px">
     <h1><strong>Kommentare</strong></h1>
     <div fxLayout="row" fxLayoutGap="5px" *ngFor="let annotate of annotates; trackBy: trackById">
-      <div *ngIf="annotate.comments.visibility == 'public'"> <span>{{annotate.user}}:   </span> {{annotate.comments.text}}</div>
-      <div *ngIf="annotate.comments.visibility == 'privat'"> <span>  Anonym:   </span> {{annotate.comments.text}}</div>
+      <div *ngIf="annotate.comments.visibility == 'public'"> <span><strong>{{annotate.user}}: </strong></span> {{annotate.comments.text}}</div>
+      <div *ngIf="annotate.comments.visibility == 'privat'"> <span>  <strong>Anonym: </strong></span> {{annotate.comments.text}}</div>
+    </div>
+
+    <div fxLayoutAlign="center">
+      <p id="doComment" style="display: none;">
+        <app-user-comment *ngIf="userId" [userId]="userId" [projectId]="projectId" (hideComment)="catchStatusComent($event)"></app-user-comment>
+      </p>
     </div>
   </div>
 
-  <div fxLayoutAlign="end">
-    <button style="background: green" mat-raised-button color="primary" (click)="comment()">Kommentieren</button>
+  <div style="text-align: end" id="hideBtnMainComment">
+    <!-- <button style="background: green" mat-raised-button color="primary" (click)="comment()">Kommentieren</button> -->
+    <button style="background: green" mat-raised-button color="primary" (click)="doComment()">Kommentieren</button>
   </div>
 </div>
 

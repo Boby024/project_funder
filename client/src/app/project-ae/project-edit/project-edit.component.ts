@@ -1,4 +1,4 @@
-import {Component, Directive, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ProjectAeService} from '../project-ae.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormBuilder, Validators} from '@angular/forms';
@@ -6,7 +6,7 @@ import {Categorie} from '../../../assets/models/categorie';
 import {Project} from '../../../assets/models/project';
 import {StartpageService} from '../../startpage/startpage.service';
 import {AuthenticationUserService} from '../../auth/authentication/authentication-user.service';
-import {isEmpty} from 'rxjs/operators';
+import {Location} from '@angular/common';
 
 
 @Component({
@@ -30,7 +30,7 @@ export class ProjectEditComponent implements OnInit {
   });
 
   projectCreate = this.fb.group({
-    title: ['', [Validators.maxLength(50), Validators.required]],
+    title: ['', [Validators.minLength(3), Validators.maxLength(50), Validators.required]],
     description: ['', Validators.required],
     fundinglimit: ['', [Validators.maxLength(14), Validators.required]], // Validators.pattern('^[0-9\\s.]{2,12}')
     creatorId: [''],
@@ -52,9 +52,12 @@ export class ProjectEditComponent implements OnInit {
               private startpageService: StartpageService,
               private activatedRoute: ActivatedRoute,
               private authenticationUserService: AuthenticationUserService,
-              private router: Router) {
+              private router: Router,
+              private location: Location) {
     activatedRoute.url.subscribe( (url) => console.log(url) );
   }
+
+  get title() { return this.projectCreate.get('title'); }
 
   ngOnInit(): void {
     this.creatorId = this.authenticationUserService.getSessionStoragePassingData().id;
@@ -134,16 +137,22 @@ export class ProjectEditComponent implements OnInit {
       creatorId: this.creatorId,
     });
     console.log(this.projectCreate.value);
-    this.projectAeService.createProject(JSON.stringify(this.projectCreate.value))
-      .subscribe( (response) => {
-        console.log(response);
-        this.createdProject = response;
-        if (this.createdProject) {
-        } else {
-          document.getElementById('messageCreate').innerHTML = 'Aktualieren Sie das Fenster and versuchen Sie nochmal';
-          // this.router.navigate(['/projectfunder']);
-        }
-      });
+    if (this.projectCreate.valid) {
+      this.projectAeService.createProject(JSON.stringify(this.projectCreate.value))
+        .subscribe( (response) => {
+          console.log(response);
+          this.createdProject = response;
+          this.router.navigate(['/projectfunder/view_profil/', this.authenticationUserService.getSessionStoragePassingData().username]);
+          /*if (this.createdProject) {
+          } else {
+            document.getElementById('messageCreate').innerHTML = 'Aktualieren Sie das Fenster and versuchen Sie nochmal';
+            // this.router.navigate(['/projectfunder']);
+          } */
+        });
+    }
+  }
+  deleteAction() {
+    this.location.back();
   }
 
   trackByIdentifier(index: number, project: any): string {

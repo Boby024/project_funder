@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {User} from '../../assets/models/user';
 import {catchError} from 'rxjs/operators';
+import {DetailByUsername} from '../../assets/models/detailByUsername';
 
 @Injectable({
   providedIn: 'root'
@@ -27,5 +28,19 @@ export class DataAuthService {
           return of(null);
         })
       );
+  }
+
+  getUserByUsername(username: string): Observable<DetailByUsername> {
+    return this.http.get<DetailByUsername>(this.url + '/getUserByUsername/' + username)
+      .pipe(
+        catchError(catchError( this.handleError('getUserByUsername', null) ))
+      );
+  }
+
+  private handleError<T>(operation: string, result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(operation + ' -> failed', error);
+      return of(result as T);
+    };
   }
 }

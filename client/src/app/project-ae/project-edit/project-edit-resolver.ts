@@ -1,7 +1,7 @@
 import {ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from '@angular/router';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {catchError, map} from 'rxjs/operators';
+import {map} from 'rxjs/operators';
 import {ProjectAeService} from '../project-ae.service';
 
 @Injectable({ providedIn: 'root' })

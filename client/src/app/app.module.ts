@@ -7,6 +7,8 @@ import {RouterModule, Routes} from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {HeaderModule} from './header/header.module';
 import {DialogboxModule} from './dialogbox/dialogbox.module';
+import {AccountModule} from './account/account.module';
+import {ErrorPageModule} from './error-page/error-page.module';
 
 const appRoutes: Routes = [
   // {path: 'header', component: HeaderOverviewComponent},
@@ -14,6 +16,13 @@ const appRoutes: Routes = [
   {
     path: 'projectfunder',
     loadChildren: () => import('./startpage/startpage.module').then(mod => mod.StartpageModule)
+  },
+  { path: 'projectfunder/register',
+    loadChildren: () => import('./account/account.module').then(mod => mod.AccountModule),
+  },
+  {
+    path: 'projectfunder/page_not_found',
+    loadChildren: () => import('./error-page/error-page.module').then(mod => mod.ErrorPageModule),
   },
   {
     path: '',
@@ -29,10 +38,12 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule,
     StartpageModule,
-    RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule,
     HeaderModule,
     DialogboxModule,
+    AccountModule,
+    ErrorPageModule,
+    RouterModule.forRoot(appRoutes),
   ],
   providers: [],
   bootstrap: [AppComponent],

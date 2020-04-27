@@ -1,16 +1,18 @@
 import {ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot} from '@angular/router';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {AuthenticationUserService} from '../../auth/authentication/authentication-user.service';
 import {SingleViewService} from '../single-view.service';
+import {DataAuthService} from '../../auth/data-auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class ProfilUserResolver implements Resolve<any> {
 
   constructor(private singleViewService: SingleViewService,
               private router: Router,
-              private authenticationUserService: AuthenticationUserService) {}
+              private authenticationUserService: AuthenticationUserService,
+              private dataAuthService: DataAuthService) {}
 
   resolve( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): Observable<any>|Promise<any>|any {
     const username = route.paramMap.get('username');
@@ -20,6 +22,7 @@ export class ProfilUserResolver implements Resolve<any> {
     console.log('Resolving for user_projects ID:' + creatorId);
     console.log(url);
     console.log(route.url);
+    console.log(username);
 
     if (usernameLogged === username) {
       return this.singleViewService.userProjects( +(creatorId) ).pipe(
@@ -29,12 +32,28 @@ export class ProfilUserResolver implements Resolve<any> {
             return projects;
           } else {
             console.log('user projects with this creator_id:' + creatorId + ' don*t exist');
-            this.router.navigate(['/projectfunder']);
+            this.router.navigate(['/projectfunder/page_not_found']);
             return null;
           }
         }));
     }else {
-      this.router.navigate(['/projectfunder']);
+      console.log(username);
+      return this.dataAuthService.getUserByUsername(username).pipe(
+        map(detailByUsername => {
+          console.log(detailByUsername);
+          if (detailByUsername.username === username) {
+            return detailByUsername;
+            /*return this.singleViewService.userProjectsByUsername( detailByUsername.username ).pipe(
+              map(projects => {
+                const searchedUsername = username;
+                localStorage.removeItem('searchedUsername');
+                localStorage.setItem('searchedUsername', searchedUsername);
+                return projects;
+              })); */
+          }else {
+            this.router.navigate(['/projectfunder/page_not_found']);
+          }
+        }));
     }
   }
 }
@@ -51,3 +70,22 @@ if (typeof (project.predecessor) === 'number') {
                 }));
           }
  */
+/*
+return this.singleViewService.userProjectsByUsername(username).pipe(
+  map(projects => {
+    if (projects) {
+      console.log(projects);
+      if (projects.length > 0) {
+        return projects;
+      }else {
+        const searchedUsername = username;
+        localStorage.removeItem('searchedUsername');
+        localStorage.setItem('searchedUsername', searchedUsername);
+        return projects;
+      }
+    } else {
+      console.log('user projects with this creator_username:' + username + ' don*t exist');
+      this.router.navigate(['/projectfunder/page_not_found']);
+      return null;
+    }
+  })); */

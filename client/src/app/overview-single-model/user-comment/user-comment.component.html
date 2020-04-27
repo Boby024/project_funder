@@ -1,0 +1,46 @@
+<div>
+  <mat-card-content>
+
+    <form>
+      <div style="font-size: 10px">
+        <mat-label>change font-size: </mat-label>
+        <mat-form-field appearance="outline" style="width: 70px">
+          <input matInput type="text" placeholder="only number" [(ngModel)]="fontSize" name="fontSize" (keypress)="keyPress($event)">
+        </mat-form-field>
+      </div>
+    </form>
+
+    <form [formGroup]="commentData" (ngSubmit)="onSubmit()">
+      <div fxLayout="column" fxLayoutGap="10px">
+
+        <div>
+          <mat-form-field appearance="outline" style="width: 350px" [style.font-size.px]="fontSize">
+            <mat-label>Kommentar</mat-label>
+            <textarea matInput  formControlName="text" placeholder=" schreibe Kommentar"
+                      cdkTextareaAutosize
+                      cdkAutosizeMinRows="2"
+                      cdkAutosizeMaxRows="10">
+
+            </textarea>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <mat-checkbox formControlName="visibility">Anonym kommentieren ?</mat-checkbox>
+        </div><br>
+
+        <div fxLayout="row" fxLayoutAlign="space-between">
+          <div>
+            <button mat-raised-button color="primary" [disabled]="!commentData.valid">Kommentar hinzufügen</button>
+          </div>
+          <div>
+            <button mat-raised-button color="primary" (click)="closeComment()">abbrechen</button>
+          </div>
+        </div>
+
+      </div>
+    </form>
+
+    <div id="messageTransaction" style="margin-top: 15px"></div>
+  </mat-card-content>
+</div>
