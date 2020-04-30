@@ -5,6 +5,8 @@ import {Router} from '@angular/router';
 import {AuthenticationUserService} from '../../auth/authentication/authentication-user.service';
 import {SwitchAuthComponent} from '../../dialogbox/switch-auth/switch-auth.component';
 import {MatDialog} from '@angular/material/dialog';
+import {forkJoin, merge} from 'rxjs';
+import {count, map, scan, switchMapTo, tap, withLatestFrom} from 'rxjs/operators';
 
 export interface DialogDataStartpage {
   action: any;
@@ -17,6 +19,7 @@ export interface DialogDataStartpage {
 export class StartpageOverviewComponent implements OnInit {
 
   projects: Project[];
+  isProjectsEmpty = false;
   searchWord: string;
 
   constructor(private startpageService: StartpageService,
@@ -27,14 +30,31 @@ export class StartpageOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.showprojects();
+
+    /*const objP = this.startpageService.getProjects();
+    forkJoin({objP}).subscribe({
+      next: value => console.log(value),
+      complete: () => console.log('This is how it ends!'),
+    }); */
+
   }
 
   showprojects() {
     this.startpageService.getProjects().subscribe( (data) => {
       this.projects = data;
       console.log(this.projects);
+      if (this.projects.length > 0) {
+        this.isProjectsEmpty  = true;
+      }
     });
   }
+  /*showprojectsWithProgressbar() {
+    const responseProjects = this.startpageService.getProjects();
+    forkJoin({responseProjects}).subscribe({
+      next: (value) => {this.dataProjects = value.responseProjects; this.projects = this.dataProjects; console.log(this.dataProjects); },
+      complete: () => console.log('This is how it ends!'),
+    });
+  } */
 
   trackByIdentifier(index: number, project: any): string {
     return project.identifier;
@@ -48,6 +68,9 @@ export class StartpageOverviewComponent implements OnInit {
     if (this.searchWord !== undefined) {
       this.startpageService.getProjects().subscribe( (data) => {
         this.projects = data.filter((project => (project.title.toLowerCase()).indexOf(this.searchWord.toLowerCase()) > -1 ));
+        if (this.projects.length > 0) {
+          this.isProjectsEmpty  = true;
+        }
       });
     }
   }

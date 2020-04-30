@@ -1,8 +1,9 @@
 <div class="element">
   <div class="elementImgae">{{project?.image}}</div>
   <div class="elementText">
-    <p [routerLink]="['/projectfunder/view_project/', project?.identifier]" class="titleColor">{{project?.title}}</p>
+    <p [routerLink]="['/projectfunder/view_project/', project?.identifier, {project: project?.identifier}]" class="titleColor">{{project?.title}}</p>
     <p><strong>von: </strong>{{project?.user}}</p>
     <p><strong>aktuell: </strong>{{project?.fundinglimit}} €</p>
   </div>
 </div>
+

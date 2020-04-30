@@ -2,13 +2,13 @@
 <div class="centerBody">
 
   <div fxLayout="row" fxLayoutAlign="space-between" style="margin-bottom: 15px; margin-top: 15px;">
-    <div>
+    <div fxFlex>
       <button mat-raised-button color="primary" (click)="goCreateProject()">create project</button>
     </div>
 
-    <div>
+    <div class="searchDiv">
       <form>
-        <mat-form-field appearance="outline" fxFlex style="width: 350px">
+        <mat-form-field appearance="outline" fxFlex="auto">
           <mat-label>search project</mat-label>
           <input matInput placeholder="search a project..." #box (keyup)="onKey(box.value)">
         </mat-form-field>
@@ -16,23 +16,45 @@
     </div>
   </div>
 
-  <div fxLayoutAlign="center" style="margin-bottom: 15px; margin-top: 15px;">
-    <mat-card-title style="width: 300px">Offne Projekte</mat-card-title>
+  <div *ngIf="isProjectsEmpty">
+
+    <div *ngIf="projects.length < 1" fxLayoutAlign="center">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <div fxLayoutAlign="center" style="margin-bottom: 15px; margin-top: 15px;">
+      <mat-card-title style="width: 300px">Offne Projekte</mat-card-title>
+    </div>
+    <div  fxLayout="row wrap">
+      <div *ngFor="let project of projects; trackBy: trackByIdentifier">
+        <app-list-project-overview *ngIf="project.status === 'active' " [project]="project"></app-list-project-overview>
+      </div>
+    </div>
+
+
+    <div fxLayoutAlign="center" style="margin-bottom: 15px; margin-top: 15px;">
+      <mat-card-title style="width: 300px">Abgeschlossne Projekte</mat-card-title>
+    </div>
+    <div   fxLayout="row wrap">
+      <div *ngFor="let project of projects">
+        <app-list-project-overview *ngIf="project.status === 'closed' " [project]="project"></app-list-project-overview>
+      </div>
+    </div>
+
   </div>
-  <div  fxLayout="row wrap">
-    <div *ngFor="let project of projects; trackBy: trackByIdentifier">
-      <app-list-project-overview *ngIf="project.status === 'active' " [project]="project"></app-list-project-overview>
+
+  <div *ngIf="!isProjectsEmpty" fxLayout="column" fxLayoutGap="10px" style="margin-top: 50px; font-size: 25px">
+    <div fxLayoutAlign="center">
+      <mat-spinner></mat-spinner>
+    </div>
+    <div fxLayoutAlign="center" >
+      Der Server konnte keine Projects zu Ihrem Browser schicken<br>
+    </div>
+    <div fxLayoutAlign="center" >
+      Warten Sie einen Moment und Aktualisieren Sie die Seite !
     </div>
   </div>
 
-
-  <div fxLayoutAlign="center" style="margin-bottom: 15px; margin-top: 15px;">
-    <mat-card-title style="width: 300px">Abgeschlossne Projekte</mat-card-title>
-  </div>
-  <div   fxLayout="row wrap">
-    <div *ngFor="let project of projects">
-      <app-list-project-overview *ngIf="project.status === 'closed' " [project]="project"></app-list-project-overview>
-    </div>
-  </div>
 
 </div>
+

@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {Observable, of} from 'rxjs';
-import {catchError} from 'rxjs/operators';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpEvent, HttpEventType, HttpHeaders} from '@angular/common/http';
+import {forkJoin, Observable, of} from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
 import {Project} from '../../assets/models/project';
 import {User} from '../../assets/models/user';
 
@@ -19,20 +19,21 @@ export class StartpageService {
 
   constructor(private http: HttpClient) { }
 
-  handleError(eror: HttpErrorResponse, operation: string, result: any) {
-    console.error(operation + ' -> failed');
-    return of(result);
-  }
-
   getProjects(): Observable<Project []> {
     return this.http.get<Project []>(this.url + '/projects')
       .pipe(
-        catchError(err => {
-          console.error('getProjects -> failed', err);
-          return of([]);
-        })
+        catchError(this.handleError('getProjects', []))
       );
   }
+
+  sendPercent(event: HttpEvent<any>) {  // event: HttpEvent<any>, data: any
+    switch (event.type) {
+      case HttpEventType.DownloadProgress:
+        const percentDone = Math.round(100 * event.loaded / event.total);
+        return percentDone;
+    }
+  }
+
   getUser(id: string): Observable<User> {
     return this.http.get<User>(this.url + '/getUser/' + id)
       .pipe(
@@ -41,5 +42,12 @@ export class StartpageService {
           return of(null);
         })
       );
+  }
+
+  private handleError<T>(operation: string, result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(operation + ' -> failed', error);
+      return of(result as T);
+    };
   }
 }

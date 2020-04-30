@@ -12,7 +12,9 @@ import william_research_project.project_funder_backend.repository.UserRepository
 import javax.validation.Valid;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
@@ -92,4 +94,17 @@ public class ProjectController {
         return ResponseEntity.ok(updateProject);
     }
 
+
+    @DeleteMapping("/deleteProjectById/{id}")
+    public Map<String, Boolean> deleteProjectById(@PathVariable(value = "id") Integer projectId)
+            throws ResourceNotFoundException {
+        System.out.println("Delete Project with ID = " + projectId + "...");
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ResourceNotFoundException("Project not found for this id :: " + projectId));
+
+        projectRepository.delete(project);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        return response;
+    }
 }

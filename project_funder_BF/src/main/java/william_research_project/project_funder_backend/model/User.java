@@ -38,11 +38,22 @@ public class User {
     @Column(name = "pssword")
     private String pssword;
 
+    @Column(name = "description")
     private String description;
-
 
     @Column(name = "createddate")
     private Instant createddate;
+
+    @Column(name = "idprofilimage")
+    private Integer idprofilimage;
+
+    public Integer getIdprofilimage() {
+        return idprofilimage;
+    }
+
+    public void setIdprofilimage(Integer idprofilimage) {
+        this.idprofilimage = idprofilimage;
+    }
 
     /*@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id",referencedColumnName = "owner")
@@ -129,7 +140,7 @@ public class User {
 
     public User() {}
 
-    public User(String email, String username, String surname, String firstname, String pssword, String description, Instant createddate) {
+    public User(String email, String username, String surname, String firstname, String pssword, String description, Instant createddate, Integer idprofilimage) {
         this.email = email;
         this.username = username;
         this.surname = surname;
@@ -137,6 +148,7 @@ public class User {
         this.pssword = pssword;
         this.description = description;
         this.createddate = createddate;
+        this.idprofilimage = idprofilimage;
     }
     public User(String email,String pssword, String description) {
         this.email = email;

@@ -12,7 +12,7 @@
       <p>{{username}}</p>
     </div>
     <div *ngIf="statusUser() === false">
-      <p>log in</p>
+      <p (click)="openDialog()">log in</p>
     </div>
 
     <div>

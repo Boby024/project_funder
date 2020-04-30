@@ -9,6 +9,7 @@ import {HeaderModule} from './header/header.module';
 import {DialogboxModule} from './dialogbox/dialogbox.module';
 import {AccountModule} from './account/account.module';
 import {ErrorPageModule} from './error-page/error-page.module';
+import {PageNotFoundComponent} from './error-page/page-not-found/page-not-found.component';
 
 const appRoutes: Routes = [
   // {path: 'header', component: HeaderOverviewComponent},
@@ -28,6 +29,10 @@ const appRoutes: Routes = [
     path: '',
     redirectTo: '/projectfunder',
     pathMatch: 'full',
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent,
   }
 ];
 

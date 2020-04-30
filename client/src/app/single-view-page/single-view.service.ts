@@ -86,6 +86,13 @@ export class SingleViewService {
         catchError( this.handleError('donateMoney', null) )
       );
   }
+
+  deleteProjectById(projectId: number): Observable<NumberProjectByCreaterId> {
+    return this.http.get<NumberProjectByCreaterId>(this.url + '/deleteProjectById/' + projectId)
+      .pipe(
+        catchError( this.handleError('deleteProjectById', null) )
+      );
+  }
   private handleError<T>(operation: string, result?: T) {
     return (error: any): Observable<T> => {
       console.error(operation + ' -> failed', error);

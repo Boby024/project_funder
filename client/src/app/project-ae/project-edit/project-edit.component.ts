@@ -47,6 +47,8 @@ export class ProjectEditComponent implements OnInit {
   updateProject: Project;
   createdProject: Project;
 
+  isProjectsEmpty = false;
+
   constructor(private fb: FormBuilder,
               private projectAeService: ProjectAeService,
               private startpageService: StartpageService,
@@ -108,6 +110,9 @@ export class ProjectEditComponent implements OnInit {
     this.startpageService.getProjects().subscribe( (response) => {
       this.projects = response;
       console.log(this.projects);
+      if (this.projects.length > 0) {
+        this.isProjectsEmpty  = true;
+      }
     });
   }
   submit() {

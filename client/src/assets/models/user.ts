@@ -8,4 +8,5 @@ export interface User {
   description?: string;
   image?: any;
   createddate?: string;
+  idprofilimage?: number;
 }

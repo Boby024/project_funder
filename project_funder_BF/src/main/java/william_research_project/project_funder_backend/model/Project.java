@@ -11,7 +11,7 @@ import java.util.List;
 @Access(value = AccessType.FIELD)
 public class Project {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "identifier")
     private Integer identifier;
 

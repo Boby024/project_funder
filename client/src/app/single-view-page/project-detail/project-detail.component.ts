@@ -144,7 +144,7 @@ export class ProjectDetailComponent implements OnInit {
     if (this.authenticationUserService.currentUserStatus) {
       const creatorid = this.authenticationUserService.getSessionStoragePassingData().id;
       if (this.detailProject.creatorId === creatorid) {
-        this.router.navigate(['/project/updateProject/', this.detailProject.identifier]);
+        this.router.navigate(['/project/updateProject/', this.detailProject?.identifier, {project: this.detailProject?.identifier}]);
       }else {
         this.openDialogNotLogged('Für dieses Projekt haben Sie kein Recht zum Editieren');
       }
@@ -152,10 +152,21 @@ export class ProjectDetailComponent implements OnInit {
       this.openDialogNotLogged('Um <strong>editieren</strong> zu können, müssen Sie eingeloggt werden');
     }
   }
-  deleteProject() {}
+  deleteProjectById() {
+    if (this.authenticationUserService.currentUserStatus) {
+      const creatorid = this.authenticationUserService.getSessionStoragePassingData().id;
+      if (this.detailProject.creatorId === creatorid) {
+        this.openDialogNotLogged('Wollen Sie wirklich das Project löschen');
+      }else {
+        this.openDialogNotLogged('Für dieses Projekt haben Sie kein Recht zum Editieren');
+      }
+    }else {
+      this.openDialogNotLogged('Um <strong>löschen</strong> zu können, müssen Sie eingeloggt werden');
+    }
+  }
   donateFunction() {
     if (this.authenticationUserService.currentUserStatus) {
-      this.router.navigate(['/projectfunder/project_fund/id/', this.detailProject.identifier]);
+      this.router.navigate(['/projectfunder/project_fund/id/', this.detailProject?.identifier, {project: this.detailProject?.identifier}]);
     }else {
       this.openDialogNotLogged('Um <strong>spenden</strong> zu können, müssen Sie eingeloggt werden');
     }

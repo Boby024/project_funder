@@ -1,3 +1,4 @@
 
-
-
+.searchDiv:hover, .searchDiv:active{
+  width: 350px;
+}

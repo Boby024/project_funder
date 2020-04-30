@@ -9,49 +9,53 @@ import {DataAuthService} from '../../auth/data-auth.service';
 @Injectable({ providedIn: 'root' })
 export class ProfilUserResolver implements Resolve<any> {
 
+  creatorId: number;
+  usernameLogged: string;
+  username: string;
+
   constructor(private singleViewService: SingleViewService,
               private router: Router,
               private authenticationUserService: AuthenticationUserService,
               private dataAuthService: DataAuthService) {}
 
   resolve( route: ActivatedRouteSnapshot, state: RouterStateSnapshot ): Observable<any>|Promise<any>|any {
-    const username = route.paramMap.get('username');
-    const creatorId = this.authenticationUserService.getSessionStoragePassingData().id;
-    const usernameLogged = this.authenticationUserService.getSessionStoragePassingData().username;
+    this.username = route.paramMap.get('username');
     const url = state.url;
-    console.log('Resolving for user_projects ID:' + creatorId);
     console.log(url);
     console.log(route.url);
-    console.log(username);
+    console.log(this.username);
 
-    if (usernameLogged === username) {
-      return this.singleViewService.userProjects( +(creatorId) ).pipe(
+    if (this.authenticationUserService.currentUserStatus) {
+      this.creatorId = this.authenticationUserService.getSessionStoragePassingData().id;
+      this.usernameLogged = this.authenticationUserService.getSessionStoragePassingData().username;
+      console.log('Resolving for user_projects ID:' + this.creatorId);
+    }else {
+      this.usernameLogged = this.username + 'notfound';
+    }
+
+    if (this.usernameLogged === this.username) {
+      return this.singleViewService.userProjects( +(this.creatorId) ).pipe(
         map(projects => {
           if (projects) {
             console.log(projects);
             return projects;
           } else {
-            console.log('user projects with this creator_id:' + creatorId + ' don*t exist');
-            this.router.navigate(['/projectfunder/page_not_found']);
+            console.log('user projects with this creator_id:' + this.creatorId + ' don*t exist');
+            // this.router.navigate(['/projectfunder/page_not_found']);
+            this.router.navigate(['/projectfunder/page_not_found', {query_username: this.username}]);
             return null;
           }
         }));
     }else {
-      console.log(username);
-      return this.dataAuthService.getUserByUsername(username).pipe(
+      console.log(this.username);
+      return this.dataAuthService.getUserByUsername(this.username).pipe(
         map(detailByUsername => {
           console.log(detailByUsername);
-          if (detailByUsername.username === username) {
+          if (detailByUsername.username === this.username) {
             return detailByUsername;
-            /*return this.singleViewService.userProjectsByUsername( detailByUsername.username ).pipe(
-              map(projects => {
-                const searchedUsername = username;
-                localStorage.removeItem('searchedUsername');
-                localStorage.setItem('searchedUsername', searchedUsername);
-                return projects;
-              })); */
           }else {
-            this.router.navigate(['/projectfunder/page_not_found']);
+            // this.router.navigate(['/projectfunder/page_not_found']);
+            this.router.navigate(['/projectfunder/page_not_found', {query_username: this.username}]);
           }
         }));
     }

@@ -12,6 +12,7 @@ import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {ProjectAeModule} from '../project-ae/project-ae.module';
 import {SingleViewPageModule} from '../single-view-page/single-view-page.module';
 import {OverviewSingleModelModule} from '../overview-single-model/overview-single-model.module';
@@ -46,6 +47,7 @@ const startRoutes: Routes = [
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatProgressSpinnerModule,
     ProjectAeModule,
     SingleViewPageModule,
     OverviewSingleModelModule,

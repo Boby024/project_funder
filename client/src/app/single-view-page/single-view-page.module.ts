@@ -22,7 +22,7 @@ const singleViewtRoutes: Routes = [
   {
     path: 'projectfunder/view_profil/:username',
     component: ProfilUserComponent,
-    canActivate: [AuthGuardService],
+    // canActivate: [AuthGuardService],
     resolve: {userProjectsResolver: ProfilUserResolver},
   },
   {

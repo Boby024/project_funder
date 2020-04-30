@@ -23,10 +23,7 @@ export class DataAuthService {
   login(data: any): Observable<User> {
     return this.http.post<User>(this.url + '/login', data, this.httpOptions)
       .pipe(
-        catchError(err => {
-          console.error('login -> failed', err);
-          return of(null);
-        })
+        catchError(this.handleError('login', null))
       );
   }
 

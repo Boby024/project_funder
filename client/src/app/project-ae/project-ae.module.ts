@@ -14,7 +14,6 @@ import {AuthGuardService} from '../auth/authentication/auth-guard.service';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {TextFieldModule} from '@angular/cdk/text-field';
 
-
 const projectRoutes: Routes = [
   {
     path: 'project/createProject',

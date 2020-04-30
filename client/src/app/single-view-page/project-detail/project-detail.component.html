@@ -25,7 +25,7 @@
           <div>
             <p *ngIf="projectPredecessor">
               <strong>Vorgänger-Projekt: </strong>
-              <span  style="color: cornflowerblue" [routerLink]="['/projectfunder/view_project/', projectPredecessor.identifier]" routerLinkActive="active-link">{{projectPredecessor.title}}</span>
+              <span  style="color: cornflowerblue" [routerLink]="['/projectfunder/view_project/', projectPredecessor.identifier, {project: projectPredecessor?.identifier}]" routerLinkActive="active-link">{{projectPredecessor.title}}</span>
             </p>
             <p *ngIf="!projectPredecessor">
               <strong>Vorgänger-Projekt: </strong> Kein Vorgänger
@@ -43,7 +43,7 @@
     <mat-card-content>
       <div fxLayoutAlign="center" fxLayout="row" fxLayoutGap="20px">
         <div><button style="background: green" mat-raised-button color="primary" (click)="donateFunction()"> Spenden</button></div>
-        <div><button  style="background: red" mat-raised-button color="primary" (click)="deleteProject()"> Projekt Löschen</button></div>
+        <div><button  style="background: red" mat-raised-button color="primary" (click)="deleteProjectById()"> Projekt Löschen</button></div>
         <div><button mat-raised-button color="primary" (click)="goEdit()"> Projekt Editieren</button></div>
       </div>
       <p></p>

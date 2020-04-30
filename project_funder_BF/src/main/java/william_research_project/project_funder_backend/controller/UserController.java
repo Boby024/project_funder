@@ -7,18 +7,18 @@ import org.springframework.web.bind.annotation.*;
 
 import william_research_project.project_funder_backend.exception.ResourceNotFoundException;
 import william_research_project.project_funder_backend.model.Account;
+import william_research_project.project_funder_backend.model.Profilimage;
 import william_research_project.project_funder_backend.model.Project;
 import william_research_project.project_funder_backend.model.User;
 import william_research_project.project_funder_backend.repository.AccountRepository;
+import william_research_project.project_funder_backend.repository.ProfilImageRepository;
 import william_research_project.project_funder_backend.repository.ProjectRepository;
 import william_research_project.project_funder_backend.repository.UserRepository;
 
 import javax.validation.Valid;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @CrossOrigin(origins = "http://localhost:8080")
@@ -34,6 +34,9 @@ public class UserController {
 
     @Autowired
     ProjectRepository projectRepository;
+
+    @Autowired
+    ProfilImageRepository profilImageRepository;
 
     @PostMapping(value = "/login")
     public ResponseEntity<JSONObject> login(@Valid @RequestBody User user) {
@@ -65,23 +68,60 @@ public class UserController {
         return accountRepository.findAll();
     }
 
+    @PostMapping("/user/uploadProfilImage")
+    public Profilimage uploadProfilImage(@Valid @RequestBody Profilimage profilimage) {
+        System.out.println("potential profil image user");
+        // byte[] picBytes = profilimage.getImageStringForm().getBytes(StandardCharsets.UTF_8);
+        byte[] picBytes = Base64.getEncoder().encode(profilimage.getImageStringForm().getBytes());
+        Profilimage _profilimage1 = profilImageRepository.save(new Profilimage( picBytes, profilimage.getFilesize(), profilimage.getLastmodified(), profilimage.getFiletype()));
+        return _profilimage1;
+    }
+
+    @PutMapping("/user/updateUploadProfilImage")
+    public Profilimage updateUploadProfilImage(@Valid @RequestBody Profilimage profilimage) {
+        System.out.println("UDPATE potential profil image user with this pic_ID " + profilimage.getId());
+        byte[] picBytes = Base64.getEncoder().encode(profilimage.getImageStringForm().getBytes());
+
+        Optional<Profilimage> found_profilimage = profilImageRepository.findById(profilimage.getId());
+        if (found_profilimage.isPresent()) {
+            Profilimage profilimageData = found_profilimage.get();
+            profilimageData.setImage(picBytes);
+            profilimageData.setFilesize(profilimage.getFilesize());
+            profilimageData.setLastmodified(profilimage.getLastmodified());
+            profilimageData.setFiletype(profilimage.getFiletype());
+            Profilimage updateProfilimage =  profilImageRepository.save(profilimageData);
+            return updateProfilimage;
+        }else {
+            return profilimage;
+        }
+    }
+
     @PostMapping(value = "/user/create")
-    public User createUser(@Valid @RequestBody User user) {
+    public  ResponseEntity<JSONObject> createUser(@Valid @RequestBody User user) {
         System.out.println("store user");
-        //String imageData = user["image"];
-        //byte[] imageByte = imageData.getBytes(StandardCharsets.UTF_8);
+
+        JSONObject object = new JSONObject();
+        object.put("id",null);
+        object.put("username",null);
+        object.put("pssword",null);
+
         Instant timestamp = Instant.now();
-        User _user = userRepository.save(new User(user.getEmail(), user.getUsername(), user.getSurname(), user.getFirstname(), user.getPssword(), user.getDescription(), timestamp ) );
+        User _user = userRepository.save(new User(user.getEmail(), user.getUsername(), user.getSurname(), user.getFirstname(), user.getPssword(), user.getDescription(), timestamp, user.getIdprofilimage() ) );
+
         try {
             Integer id_user = _user.getId();
             if (id_user != null) {
+                object.replace("id",_user.getId());
+                object.replace("username",_user.getUsername());
+                object.replace("pssword",_user.getPssword());
+
                 // secretnummber generate by another function, but i set it here some value just for testing
                 accountRepository.save( new Account(id_user,00.00,"JNnam29KD"));
             }
         } catch (Exception e){
             System.out.println("user don't exists now");
         }
-        return _user;
+        return ResponseEntity.ok().body(object);
     }
 
     @PutMapping("/account/{id}")
@@ -130,10 +170,6 @@ public class UserController {
         _user.setEmail(user.getEmail());
         _user.setDescription(user.getDescription());
         _user.setPssword(user.getPssword());
-        //_user.setCreateddate(Instant.now());
-        // byte[] fileBase64 = user.getImage();
-
-        // _user.setImage(user.getImage() ); // DatatypeConverter.parseBase64Binary(user.getImage())
 
         final User updatedUser = userRepository.save(_user);
         return ResponseEntity.ok(updatedUser);

@@ -5,6 +5,7 @@ import {DialogDataComment} from '../../single-view-page/project-detail/project-d
 import {DialogDataStartpage} from '../../startpage/startpage-overview/startpage-overview.component';
 import {Router} from '@angular/router';
 import {DialogDataAuth} from '../../auth/authentication/auth-guard.service';
+import {DialogDataRegister} from '../../account/register/register.component';
 
 
 @Component({
@@ -20,7 +21,8 @@ export class SwitchAuthComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<SwitchAuthComponent>,
     private router: Router,
-    @Inject(MAT_DIALOG_DATA) public data: DialogDataHeader | DialogDataComment | DialogDataStartpage | DialogDataAuth ) {}
+    // tslint:disable-next-line:max-line-length
+    @Inject(MAT_DIALOG_DATA) public data: DialogDataHeader | DialogDataComment | DialogDataStartpage | DialogDataAuth | DialogDataRegister) {}
 
   onNoClick(): void {
     this.dialogRef.close();
