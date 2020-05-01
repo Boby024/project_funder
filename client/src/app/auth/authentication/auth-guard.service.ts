@@ -26,7 +26,11 @@ export class AuthGuardService implements CanActivate {
     console.log(url);
     this.openDialog('Für diese Seite brauchen Sie ein Account.');
     // this.router.navigate(['/projectfunder']);
-    // setTimeout( () => {this.closeDialog(); return false; } , 2000);
+    setTimeout( () => {
+      this.openDialog('Für diese Seite brauchen Sie ein Account.');
+      this.dialog.closeAll();
+      this.router.navigate(['/projectfunder']);
+      } , 8000);
   }
 
   openDialog(action: string): void {

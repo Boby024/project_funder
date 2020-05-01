@@ -4,6 +4,7 @@ import {Observable, of} from 'rxjs';
 import {User} from '../../assets/models/user';
 import {catchError} from 'rxjs/operators';
 import {DetailByUsername} from '../../assets/models/detailByUsername';
+import {Loginstoreddata} from '../../assets/models/loginstoreddata';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,8 @@ export class DataAuthService {
   constructor(private http: HttpClient) {
   }
 
-  login(data: any): Observable<User> {
-    return this.http.post<User>(this.url + '/login', data, this.httpOptions)
+  login(data: any): Observable<Loginstoreddata> {
+    return this.http.post<Loginstoreddata>(this.url + '/login', data, this.httpOptions)
       .pipe(
         catchError(this.handleError('login', null))
       );

@@ -1,3 +1,5 @@
+import {Profilimage} from './profilimage';
+
 export interface User {
   id: number;
   email?: string;

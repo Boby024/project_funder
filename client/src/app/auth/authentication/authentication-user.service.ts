@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {EMPTY, Observable, of} from 'rxjs';
-import {catchError} from 'rxjs/operators';
-import {User} from '../../../assets/models/user';
 import {DataAuthService} from '../data-auth.service';
+import {Loginstoreddata} from '../../../assets/models/loginstoreddata';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationUserService {
-  user: User;
+  user: Loginstoreddata;
 
   constructor(private dataAuthService: DataAuthService) {
   }

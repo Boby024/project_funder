@@ -76,4 +76,7 @@ export class HeaderOverviewComponent implements OnInit {
   goToRegister() {
     this.router.navigate(['/projectfunder/register']);
   }
+  setting() {
+    this.router.navigate(['/projectfunder/account/setting']);
+  }
 }

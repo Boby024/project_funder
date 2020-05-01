@@ -14,4 +14,5 @@ export class ListProjectOverviewComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  onSubmit() {}
 }

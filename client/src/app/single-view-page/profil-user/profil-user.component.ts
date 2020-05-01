@@ -20,6 +20,10 @@ export class ProfilUserComponent implements OnInit {
   creatorId: number;
   creatorName: string;
   numberProjectByCreaterId: NumberProjectByCreaterId;
+
+  image: any;
+  imageStatus = false;
+  searchedUserImage: any;
   constructor(private activatedRoute: ActivatedRoute,
               private authenticationUserService: AuthenticationUserService,
               private singleViewService: SingleViewService,
@@ -34,11 +38,20 @@ export class ProfilUserComponent implements OnInit {
         this.projects = data.userProjectsResolver;
         this.creatorId = this.authenticationUserService.getSessionStoragePassingData().id;
         this.creatorName = this.authenticationUserService.getSessionStoragePassingData().username;
+        if (this.authenticationUserService.getSessionStoragePassingData().profilimage !== null) {
+          this.imageStatus = true;
+          this.image = this.authenticationUserService.getSessionStoragePassingData().profilimage.image;
+        }
         this.userPanel(+(this.creatorId), this.creatorName);
       } else {
         this.detailByUsername = data.userProjectsResolver;
         console.log(this.detailByUsername);
         this.userPanel(this.detailByUsername.id, this.detailByUsername.username);
+
+        if (this.detailByUsername.profilimage !== null) {
+          this.imageStatus = true;
+          this.image = this.detailByUsername.profilimage.image;
+        }
 
         this.singleViewService.userProjects(this.detailByUsername.id)
           .subscribe( (data2) => {

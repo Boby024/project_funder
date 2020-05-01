@@ -43,13 +43,34 @@ public class UserController {
         JSONObject object = new JSONObject();
         object.put("id",null);
         object.put("username",null);
-        object.put("pssword",null);
+        object.put("profilimage",null);
+        object.put("right",null);
+
+        JSONObject object2 = new JSONObject();
+        object2.put("id",null);
+        object2.put("filesize",null);
+        object2.put("lastmodified",null);
+        object2.put("filetype",null);
+        object2.put("image",null);
+
         try {
             User user1 = userRepository.findByUsernameAndPssword(user.getUsername(), user.getPssword());
+            //BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            //String encodedPassword = passwordEncoder.encode(user.getPssword());
+            //User user1 = userRepository.findByUsernameAndPssword(user.getUsername(), encodedPassword);
             if (!user1.equals(null)) {
                 object.replace("id", user1.getId());
                 object.replace("username", user1.getUsername());
-                object.replace("pssword", user1.getPssword());
+                object.replace("right","standard");
+                //object.replace("pssword", user1.getPssword());
+                Profilimage profilimage = profilImageRepository.getOne(user1.getIdprofilimage());
+                object2.replace("id",profilimage.getId());
+                object2.replace("filesize",profilimage.getFilesize());
+                object2.replace("lastmodified",profilimage.getLastmodified());
+                object2.replace("filetype",profilimage.getFiletype());
+                object2.replace("image",profilimage.getImage());
+
+                object.replace("profilimage",object2);
             }
         } catch (Exception e) {
             System.out.println("User with Username " + user.getUsername() + " don't exist" );
@@ -90,6 +111,7 @@ public class UserController {
             profilimageData.setLastmodified(profilimage.getLastmodified());
             profilimageData.setFiletype(profilimage.getFiletype());
             Profilimage updateProfilimage =  profilImageRepository.save(profilimageData);
+
             return updateProfilimage;
         }else {
             return profilimage;
@@ -107,6 +129,7 @@ public class UserController {
 
         Instant timestamp = Instant.now();
         User _user = userRepository.save(new User(user.getEmail(), user.getUsername(), user.getSurname(), user.getFirstname(), user.getPssword(), user.getDescription(), timestamp, user.getIdprofilimage() ) );
+        // User _user = userRepository.save(new User(user.getEmail(), user.getUsername(), user.getSurname(), user.getFirstname(), generateHashBCryptPassword(user.getPssword()), user.getDescription(), timestamp, user.getIdprofilimage() ) );
 
         try {
             Integer id_user = _user.getId();
@@ -116,7 +139,8 @@ public class UserController {
                 object.replace("pssword",_user.getPssword());
 
                 // secretnummber generate by another function, but i set it here some value just for testing
-                accountRepository.save( new Account(id_user,00.00,"JNnam29KD"));
+                //accountRepository.save( new Account(id_user,00.00,"JNnam29KD"));
+                accountRepository.save( new Account(id_user,00.00, generateSecretnumber()));
             }
         } catch (Exception e){
             System.out.println("user don't exists now");
@@ -150,26 +174,50 @@ public class UserController {
         JSONObject object = new JSONObject();
         object.put("id",null);
         object.put("username",null);
+        object.put("profilimage",null);
+
+        JSONObject object2 = new JSONObject();
+        object2.put("id",null);
+        object2.put("filesize",null);
+        object2.put("lastmodified",null);
+        object2.put("filetype",null);
+        object2.put("image",null);
+
         try {
             User user = userRepository.findByUsername(username);
             object.replace("id", user.getId());
             object.replace("username", user.getUsername());
+
+            if (!user.equals(null)) {
+                Profilimage profilimage = profilImageRepository.getOne(user.getIdprofilimage());
+                object2.replace("id",profilimage.getId());
+                object2.replace("filesize",profilimage.getFilesize());
+                object2.replace("lastmodified",profilimage.getLastmodified());
+                object2.replace("filetype",profilimage.getFiletype());
+                object2.replace("image",profilimage.getImage());
+
+                object.replace("profilimage",object2);
+            }
         }catch (Exception e) {
             System.out.println("User with Username " + username + " don't exist" );
         }
         return ResponseEntity.ok().body(object);
     }
 
-    @PutMapping("/putUser/{id}")
+    @PutMapping("/updateUserData/{id}")
     public ResponseEntity<User> updateUser(@PathVariable(value = "id") Integer userId, @Valid @RequestBody User user)
         throws ResourceNotFoundException {
         System.out.println("Update User with ID = " + userId + "...");
         User _user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId));
 
+        _user.setFirstname(user.getFirstname());
+        _user.setSurname(user.getSurname());
+        _user.setUsername(user.getUsername());
         _user.setEmail(user.getEmail());
         _user.setDescription(user.getDescription());
         _user.setPssword(user.getPssword());
+        _user.setIdprofilimage(user.getIdprofilimage());
 
         final User updatedUser = userRepository.save(_user);
         return ResponseEntity.ok(updatedUser);
@@ -187,4 +235,40 @@ public class UserController {
         response.put("deleted", Boolean.TRUE);
         return response;
     }
+
+    public String generateSecretnumber() {
+        int leftLimit = 48; // numeral '0'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 10;
+        Random random = new Random();
+
+        String generatedString = random.ints(leftLimit, rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+        return generatedString;
+    }
+    /*public String generateHashBCryptPassword(String pssword) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.encode(pssword);
+    }
+    public Boolean checkPassword(String dbPassword, String pssword) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(pssword);
+        if (passwordEncoder.matches(dbPassword,encodedPassword)){
+            return true;
+        }
+        return false;
+    }
+    <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency> */
 }

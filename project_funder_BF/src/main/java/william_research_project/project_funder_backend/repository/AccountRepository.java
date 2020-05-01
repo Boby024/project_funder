@@ -11,6 +11,11 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     //Account findAccountByOwner(int owner);
     //List<Account> findAccountByOwner(Integer owner);
 
+
+    @Override
+    Account getOne(Integer integer);
+
     @Query("SELECT new william_research_project.project_funder_backend.dto.AccountResponse(a.owner , u.id) FROM Account a JOIN a.user u")
     public AccountResponse getJoinInformation();
+
 }

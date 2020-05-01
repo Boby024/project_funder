@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpEvent, HttpEventType, HttpHeaders} from '@angular/common/http';
 import {forkJoin, Observable, of} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
+import {catchError, map, retry} from 'rxjs/operators';
 import {Project} from '../../assets/models/project';
 import {User} from '../../assets/models/user';
 
@@ -22,6 +22,7 @@ export class StartpageService {
   getProjects(): Observable<Project []> {
     return this.http.get<Project []>(this.url + '/projects')
       .pipe(
+        retry(3),
         catchError(this.handleError('getProjects', []))
       );
   }

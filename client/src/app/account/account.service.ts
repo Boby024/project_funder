@@ -3,8 +3,8 @@ import {Observable, of} from 'rxjs';
 import {User} from '../../assets/models/user';
 import {catchError} from 'rxjs/operators';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {AuthenticationUserService} from '../auth/authentication/authentication-user.service';
 import {Profilimage} from '../../assets/models/profilimage';
+import {Account} from '../../assets/models/account';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +18,7 @@ export class AccountService {
     })
   };
 
-  constructor(private http: HttpClient,
-              private authenticationUserService: AuthenticationUserService) {
+  constructor(private http: HttpClient) {
   }
 
   private handleError<T>(operation: string, result?: T) {
@@ -45,6 +44,18 @@ export class AccountService {
     return this.http.put<Profilimage>(this.url + '/user/updateUploadProfilImage', data, this.httpOptions)
       .pipe(
         catchError(this.handleError('uploadProfilImage', null))
+      );
+  }
+  getAccountById(id: number): Observable<Account> {
+    return this.http.get<Account>(this.url + '/getAccountById/' + id)
+      .pipe(
+        catchError(this.handleError('getAccountById', null))
+      );
+  }
+  updateUserData(id: number, data: any): Observable<User> {
+    return this.http.put<User>(this.url + '/updateUserData/' + id, data, this.httpOptions)
+      .pipe(
+        catchError(this.handleError('updateUserData', null))
       );
   }
 }

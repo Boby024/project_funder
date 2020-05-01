@@ -1,0 +1,45 @@
+
+<div class="centerBody">
+
+  <div  style="text-align: right; margin-top: 30px; ">
+    <button mat-raised-button color="primary" (click)="bearbeiten()">bearbeiten</button>
+  </div>
+
+  <div style="margin-top: 10px;" fxLayout="row" fxLayoutAlign="space-between">
+    <div>
+      <p><strong>Benutzer: </strong>{{account?.user.firstname}} {{account?.user.surname}}</p>
+      <p><strong>Kredit: </strong>{{account?.credit}} €</p>
+      <p><strong>Secret number: </strong>{{account?.secretnumber}}</p>
+    </div>
+    <div *ngIf="account?.profilimage !== null" style="border: 1px solid black; height: 100px; width: 100px">
+      <img src= '{{this.account?.profilimage.image}}' height="100" accept="image/*">
+    </div>
+    <div  *ngIf="account?.profilimage === null">
+      <span>
+        <svg xmlns="http://www.w3.org/2000/svg" height="100" viewBox="0 0 24 24" width="24"><path d="M12 5.9c1.16 0 2.1.94 2.1 2.1s-.94 2.1-2.1 2.1S9.9 9.16 9.9 8s.94-2.1 2.1-2.1m0 9c2.97 0 6.1 1.46 6.1 2.1v1.1H5.9V17c0-.64 3.13-2.1 6.1-2.1M12 4C9.79 4 8 5.79 8 8s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 9c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
+      </span>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div style="margin-top: 20px;">
+    <h1><strong>Detallierte Benutzerdaten</strong></h1>
+    <mat-card-content>
+      <div fxLayout="column" fxLayoutGap="10px">
+        <div><strong>Username: </strong> {{account?.user.username}}</div>
+        <div><strong>Email-Adresse: </strong> {{account?.user.email}}</div>
+        <div><strong>Profil Beschreibung: </strong> {{account?.user.description}}</div>
+        <div><strong>Kennwort ändern: </strong> {{account?.user.pssword}}</div>
+      </div>
+    </mat-card-content>
+  </div>
+
+  <div id="bearbeiten" style="margin-top: 20px; display: none">
+    <mat-divider></mat-divider>
+    <div style="text-align: center; margin-top: 20px">
+      <app-setting-udpate-overview [userUpdate]="account.user" [userUpdateImage]="account.profilimage"></app-setting-udpate-overview>
+    </div>
+  </div>
+
+</div>
