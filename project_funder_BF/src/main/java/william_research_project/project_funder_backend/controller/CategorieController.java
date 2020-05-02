@@ -10,7 +10,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/projectfunder")
 public class CategorieController {
     @Autowired
     CategorieRepository categorieRepository;

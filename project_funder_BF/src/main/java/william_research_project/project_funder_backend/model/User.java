@@ -158,7 +158,7 @@ public class User {
 
     @Override
     public String toString(){
-        return "User "+ id +" email= "+ email +" name= "+username;
+        return "User "+ id +" email= "+ email +" name= "+username+" pssword= "+pssword;
     }
 
 }

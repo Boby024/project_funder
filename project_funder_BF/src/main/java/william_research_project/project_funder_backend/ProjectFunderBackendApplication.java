@@ -16,14 +16,12 @@ public class ProjectFunderBackendApplication {
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
+        return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-
-                registry.addMapping("/**").allowedOrigins("*"); // for /** means all mapping URL, and * for all domain
-
+                registry.addMapping("/**")
+                        .allowedOrigins("*");
             }
         };
     }
-
 }

@@ -3,12 +3,12 @@ package william_research_project.project_funder_backend.controller;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import william_research_project.project_funder_backend.exception.ResourceNotFoundException;
 import william_research_project.project_funder_backend.model.Account;
 import william_research_project.project_funder_backend.model.Profilimage;
-import william_research_project.project_funder_backend.model.Project;
 import william_research_project.project_funder_backend.model.User;
 import william_research_project.project_funder_backend.repository.AccountRepository;
 import william_research_project.project_funder_backend.repository.ProfilImageRepository;
@@ -23,7 +23,7 @@ import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/projectfunder")
 public class UserController {
 
     @Autowired
@@ -38,13 +38,14 @@ public class UserController {
     @Autowired
     ProfilImageRepository profilImageRepository;
 
-    @PostMapping(value = "/login")
-    public ResponseEntity<JSONObject> login(@Valid @RequestBody User user) {
+    String salt = "learnByDoing08263ThingBjrBsrGro";
+
+    public JSONObject loggedJsonObject(User user) {
         JSONObject object = new JSONObject();
-        object.put("id",null);
-        object.put("username",null);
+        object.put("id", user.getId());
+        object.put("username", user.getUsername());
+        object.put("right","standard");
         object.put("profilimage",null);
-        object.put("right",null);
 
         JSONObject object2 = new JSONObject();
         object2.put("id",null);
@@ -53,29 +54,38 @@ public class UserController {
         object2.put("filetype",null);
         object2.put("image",null);
 
+        Profilimage profilimage = profilImageRepository.getOne(user.getIdprofilimage());
+        if (!profilimage.equals(null)) {
+            object2.replace("id",profilimage.getId());
+            object2.replace("filesize",profilimage.getFilesize());
+            object2.replace("lastmodified",profilimage.getLastmodified());
+            object2.replace("filetype",profilimage.getFiletype());
+            object2.replace("image",profilimage.getImage());
+
+            object.replace("profilimage",object2);
+        }
+        return object;
+    }
+
+    @PostMapping(value = "/login")
+    public ResponseEntity<JSONObject> login(@Valid @RequestBody User user) {
+        JSONObject toSendObject = new JSONObject();
+        toSendObject.put("id",null);
+        toSendObject.put("username",null);
+        toSendObject.put("profilimage",null);
+        toSendObject.put("right",null);
         try {
             User user1 = userRepository.findByUsernameAndPssword(user.getUsername(), user.getPssword());
-            //BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-            //String encodedPassword = passwordEncoder.encode(user.getPssword());
-            //User user1 = userRepository.findByUsernameAndPssword(user.getUsername(), encodedPassword);
-            if (!user1.equals(null)) {
-                object.replace("id", user1.getId());
-                object.replace("username", user1.getUsername());
-                object.replace("right","standard");
-                //object.replace("pssword", user1.getPssword());
-                Profilimage profilimage = profilImageRepository.getOne(user1.getIdprofilimage());
-                object2.replace("id",profilimage.getId());
-                object2.replace("filesize",profilimage.getFilesize());
-                object2.replace("lastmodified",profilimage.getLastmodified());
-                object2.replace("filetype",profilimage.getFiletype());
-                object2.replace("image",profilimage.getImage());
 
-                object.replace("profilimage",object2);
+            //String hashed_pssword = generateHashBCryptPassword(user.getPssword(),salt);
+            //User user1 = userRepository.findByUsername(user.getUsername());
+            if (!user1.equals(null)) {
+                toSendObject = loggedJsonObject(user1);
             }
         } catch (Exception e) {
             System.out.println("User with Username " + user.getUsername() + " don't exist" );
         }
-        return ResponseEntity.ok().body(object);
+        return ResponseEntity.ok().body(toSendObject);
     }
 
     @GetMapping("/users")
@@ -122,21 +132,22 @@ public class UserController {
     public  ResponseEntity<JSONObject> createUser(@Valid @RequestBody User user) {
         System.out.println("store user");
 
-        JSONObject object = new JSONObject();
-        object.put("id",null);
-        object.put("username",null);
-        object.put("pssword",null);
+        JSONObject toSendObject = new JSONObject();
+        toSendObject.put("id",null);
+        toSendObject.put("username",null);
+        toSendObject.put("profilimage",null);
+        toSendObject.put("right",null);
+
 
         Instant timestamp = Instant.now();
-        User _user = userRepository.save(new User(user.getEmail(), user.getUsername(), user.getSurname(), user.getFirstname(), user.getPssword(), user.getDescription(), timestamp, user.getIdprofilimage() ) );
-        // User _user = userRepository.save(new User(user.getEmail(), user.getUsername(), user.getSurname(), user.getFirstname(), generateHashBCryptPassword(user.getPssword()), user.getDescription(), timestamp, user.getIdprofilimage() ) );
 
         try {
+            User _user = userRepository.save(new User(user.getEmail(), user.getUsername(), user.getSurname(), user.getFirstname(),user.getPssword(), user.getDescription(), timestamp, user.getIdprofilimage() ) );
+            // User _user = userRepository.save(new User(user.getEmail(), user.getUsername(), user.getSurname(), user.getFirstname(), generateHashBCryptPassword(salt,user.getPssword()), user.getDescription(), timestamp, user.getIdprofilimage() ) );
+
             Integer id_user = _user.getId();
-            if (id_user != null) {
-                object.replace("id",_user.getId());
-                object.replace("username",_user.getUsername());
-                object.replace("pssword",_user.getPssword());
+            if (!_user.equals(null)) {
+                toSendObject = loggedJsonObject(_user);
 
                 // secretnummber generate by another function, but i set it here some value just for testing
                 //accountRepository.save( new Account(id_user,00.00,"JNnam29KD"));
@@ -145,7 +156,7 @@ public class UserController {
         } catch (Exception e){
             System.out.println("user don't exists now");
         }
-        return ResponseEntity.ok().body(object);
+        return ResponseEntity.ok().body(toSendObject);
     }
 
     @PutMapping("/account/{id}")
@@ -196,7 +207,7 @@ public class UserController {
                 object2.replace("filetype",profilimage.getFiletype());
                 object2.replace("image",profilimage.getImage());
 
-                object.replace("profilimage",object2);
+                object.replace("profilimage", object2);
             }
         }catch (Exception e) {
             System.out.println("User with Username " + username + " don't exist" );
@@ -208,6 +219,7 @@ public class UserController {
     public ResponseEntity<User> updateUser(@PathVariable(value = "id") Integer userId, @Valid @RequestBody User user)
         throws ResourceNotFoundException {
         System.out.println("Update User with ID = " + userId + "...");
+
         User _user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for this id :: " + userId));
 
@@ -217,6 +229,7 @@ public class UserController {
         _user.setEmail(user.getEmail());
         _user.setDescription(user.getDescription());
         _user.setPssword(user.getPssword());
+        //_user.setPssword(generateHashBCryptPassword(user.getPssword(), salt));
         _user.setIdprofilimage(user.getIdprofilimage());
 
         final User updatedUser = userRepository.save(_user);
@@ -249,18 +262,19 @@ public class UserController {
                 .toString();
         return generatedString;
     }
-    /*public String generateHashBCryptPassword(String pssword) {
+    public String generateHashBCryptPassword(String salt, String pssword) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        return passwordEncoder.encode(pssword);
+        return passwordEncoder.encode(salt + pssword);
     }
-    public Boolean checkPassword(String dbPassword, String pssword) {
+    public Boolean checkerPassword(String salt, String rawPassword, String encodedPassword) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(pssword);
-        if (passwordEncoder.matches(dbPassword,encodedPassword)){
+        String rawPasswordWithSalt = passwordEncoder.encode(salt + rawPassword);
+        if (passwordEncoder.matches(rawPasswordWithSalt,encodedPassword)){
             return true;
+        }else{
+            return false;
         }
-        return false;
-    }
+    }/*
     <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
