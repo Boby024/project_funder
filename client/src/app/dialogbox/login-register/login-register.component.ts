@@ -36,6 +36,10 @@ export class LoginRegisterComponent implements OnInit {
   onSubmit() {
     this.authenticationUserService.login(JSON.stringify(this.loginDetail.value));
     if (this.authenticationUserService.currentUserStatus) {
+      this.authenticationUserService.loginFeedback.subscribe( (data) => {
+        console.log(data);
+        this.data.feedback = true;
+      });
     }else {
       document.getElementById('loginMessage').style.display = 'block';
     }

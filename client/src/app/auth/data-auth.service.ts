@@ -11,7 +11,7 @@ import {Loginstoreddata} from '../../assets/models/loginstoreddata';
 })
 export class DataAuthService {
 
-  private url = 'http://localhost:8080/api';
+  private url = 'http://localhost:8080/projectfunder';
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type':  'application/json',

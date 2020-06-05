@@ -17,7 +17,6 @@ import {ProjectAeModule} from '../project-ae/project-ae.module';
 import {SingleViewPageModule} from '../single-view-page/single-view-page.module';
 import {OverviewSingleModelModule} from '../overview-single-model/overview-single-model.module';
 
-
 const startRoutes: Routes = [
   {
     path: 'projectfunder',

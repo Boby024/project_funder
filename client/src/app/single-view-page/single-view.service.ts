@@ -14,7 +14,7 @@ import {FeedbackDonate} from '../../assets/models/feedbackDonate';
 })
 export class SingleViewService {
 
-  private url = 'http://localhost:8080/api';
+  private url = 'http://localhost:8080/projectfunder';
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type':  'application/json',

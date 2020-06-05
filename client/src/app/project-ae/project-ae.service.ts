@@ -10,7 +10,7 @@ import {Categorie} from '../../assets/models/categorie';
 })
 export class ProjectAeService {
 
-  private url = 'http://localhost:8080/api';
+  private url = 'http://localhost:8080/projectfunder';
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type':  'application/json',

@@ -25,6 +25,7 @@
     <div fxLayoutAlign="center" style="margin-bottom: 15px; margin-top: 15px;">
       <mat-card-title style="width: 300px">Offne Projekte</mat-card-title>
     </div>
+
     <div  fxLayout="row wrap">
       <div *ngFor="let project of projects; trackBy: trackByIdentifier">
         <app-list-project-overview *ngIf="project.status === 'active' " [project]="project"></app-list-project-overview>
@@ -36,7 +37,7 @@
       <mat-card-title style="width: 300px">Abgeschlossne Projekte</mat-card-title>
     </div>
     <div   fxLayout="row wrap">
-      <div *ngFor="let project of projects">
+      <div *ngFor="let project of projects; trackBy: trackByIdentifier">
         <app-list-project-overview *ngIf="project.status === 'closed' " [project]="project"></app-list-project-overview>
       </div>
     </div>

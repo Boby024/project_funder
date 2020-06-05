@@ -44,6 +44,11 @@ export class RegisterComponent implements OnInit {
               private router: Router,
               public dialog: MatDialog) { }
 
+  get email() { return this.user.get('email'); }
+  // get username() { return this.user.get('username'); }
+  get surname() { return this.user.get('surname'); }
+  get firstname() { return this.user.get('firstname'); }
+  get description() { return this.user.get('description'); }
   ngOnInit(): void {
   }
 

@@ -10,7 +10,7 @@ import {User} from '../../assets/models/user';
 })
 export class StartpageService {
 
-  private url = 'http://localhost:8080/api';
+  private url = 'http://localhost:8080/projectfunder';
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type':  'application/json',
@@ -24,24 +24,6 @@ export class StartpageService {
       .pipe(
         retry(3),
         catchError(this.handleError('getProjects', []))
-      );
-  }
-
-  sendPercent(event: HttpEvent<any>) {  // event: HttpEvent<any>, data: any
-    switch (event.type) {
-      case HttpEventType.DownloadProgress:
-        const percentDone = Math.round(100 * event.loaded / event.total);
-        return percentDone;
-    }
-  }
-
-  getUser(id: string): Observable<User> {
-    return this.http.get<User>(this.url + '/getUser/' + id)
-      .pipe(
-        catchError(err => {
-          console.error('getUser -> failed', err);
-          return of(null);
-        })
       );
   }
 

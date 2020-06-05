@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Project} from '../../../assets/models/project';
 import {StartpageService} from '../startpage.service';
 import {Router} from '@angular/router';
 import {AuthenticationUserService} from '../../auth/authentication/authentication-user.service';
 import {SwitchAuthComponent} from '../../dialogbox/switch-auth/switch-auth.component';
 import {MatDialog} from '@angular/material/dialog';
-import {forkJoin, merge} from 'rxjs';
-import {count, map, scan, switchMapTo, tap, withLatestFrom} from 'rxjs/operators';
+
 
 export interface DialogDataStartpage {
   action: any;
@@ -21,6 +20,7 @@ export class StartpageOverviewComponent implements OnInit {
   projects: Project[];
   isProjectsEmpty = false;
   searchWord: string;
+  resultsLength = 0;
 
   constructor(private startpageService: StartpageService,
               private authenticationUserService: AuthenticationUserService,
@@ -44,6 +44,7 @@ export class StartpageOverviewComponent implements OnInit {
       this.projects = data;
       console.log(this.projects);
       if (this.projects.length > 0) {
+        this.resultsLength = this.projects.length;
         this.isProjectsEmpty  = true;
       }
     });

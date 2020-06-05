@@ -7,6 +7,7 @@ import {SwitchAuthComponent} from '../../dialogbox/switch-auth/switch-auth.compo
 
 export interface DialogDataHeader {
   action: any;
+  feedback: any;
 }
 
 @Component({

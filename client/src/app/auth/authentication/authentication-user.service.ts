@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import {DataAuthService} from '../data-auth.service';
 import {Loginstoreddata} from '../../../assets/models/loginstoreddata';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationUserService {
   user: Loginstoreddata;
+  loginFeedback = new BehaviorSubject(false);
 
   constructor(private dataAuthService: DataAuthService) {
   }
@@ -37,6 +39,7 @@ export class AuthenticationUserService {
         if (this.user.id) {
           // this.setCookie('userData', JSON.stringify(response), 5);
           this.setSessionStorage('userData', JSON.stringify(response));
+          // this.loginFeedback.next(true);
           location.reload();
         }
       });
